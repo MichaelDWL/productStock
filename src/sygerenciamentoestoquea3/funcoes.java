@@ -14,6 +14,8 @@ import java.util.Scanner;
 
 public class funcoes {    
     
+    Scanner input = new Scanner(System.in);    
+    
     public void consultarProd(){
         
         Connection conn = conexaodb.conectar();
@@ -49,7 +51,6 @@ public class funcoes {
     public void CreateProd() {
         
         Connection conn = conexaodb.conectar();
-        Scanner input = new Scanner(System.in);    
         String nome, und, controleEspecial;
         
         System.out.println("Digite o nome do produto: ");
@@ -91,6 +92,30 @@ public class funcoes {
             System.out.println("Erro ao Criar: " + e.getMessage());
         }
     }
+    
+    public void baixaDprod() {
+        int options; 
+        
+        System.out.println("Você gostaria de: ");
+        System.out.println("1- Dar baixa de produtos para paciente");
+        System.out.println("2- Dar baixa de produtos para setor");
+            options = input.nextInt(); 
+        
+        switch (options) {
+            
+            case 1: 
+                // metodo baixa de paciente 
+            break; 
+                
+            case 2:
+                // metodo de baixa por setor 
+            break;
+                
+        }
+        
+        
+    }
+
 }
     
     
