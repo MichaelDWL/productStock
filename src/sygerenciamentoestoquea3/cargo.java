@@ -50,9 +50,8 @@ public class cargo {
                     
                     if (moreOrclose == 1){
                         System.out.println("**********************************************************************");
-                        System.out.println("O que Você gostaria de fazer ?");
-                        
-                        auxAlmoxarife(); 
+                        System.out.println("O que você gostaria de fazer ?");
+                            auxAlmoxarife(); 
                     }
             break;
         }
@@ -116,6 +115,15 @@ public class cargo {
                 System.out.println("**********************************************************************");
                 System.out.println(" - Inventario - ");
                 System.out.println("**********************************************************************");
+                
+                funct.invProd();
+                moreOrClose();
+                
+                if (moreOrclose == 1){
+                    System.out.println("O que você gostaria de fazer agora ?");
+                    System.out.println("**********************************************************************");
+                    almoxarife();
+                }
             break;
     
             case 4: 

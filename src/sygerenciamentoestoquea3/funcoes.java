@@ -4,7 +4,9 @@ package sygerenciamentoestoquea3;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 /**
@@ -116,7 +118,113 @@ public class funcoes {
         
     }
 
-}
+    public void invProd() { 
+        
+        boolean busca = true; 
+        int codProd, quantidadeAtual,newQtde;
+        String newLote, newDt;
+        String name; 
+        
+        // Conectar com banco de dados 
+        Connection conn = conexaodb.conectar();
+        
+        System.out.println("Qual produto você deseja inventariar ?");
+        System.out.println("**********************************************************************");
+            consultarProd(); // imprime a lista de produtos com os códigos 
+        System.out.println("**********************************************************************");
+        System.out.print("Digite o código do produto: ");   
+        
+        do{    codProd = input.nextInt();
+            System.out.println("**********************************************************************");
+            try {
+                // Seleciona um produto dentro da tabela produto onde o ID é igual a...
+                String sql = "select * from produtos where ID = ?";
+                
+                // Coloca a sintaxe de conectar/consultar na variavel stmt  
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                
+                // Substitui a interrogação que existe na string sql 
+                stmt.setInt(1, codProd); 
+
+                // Executa a consulta e coloca o retorno dela em "Resultado"
+                ResultSet resultado = stmt.executeQuery();
+
+                // Se tiver retornado algum resultado 
+                if (resultado.next()) {
+                    
+                    System.out.println("Código encontrado no banco de dados.");
+                    busca = true;
+                    
+                    // Pega a quantidade e o nome do produto no banco 
+                    quantidadeAtual = resultado.getInt("qtde");
+                    name = resultado.getString("nome");
+                    
+                    System.out.println("Quantidade atual de: "+ name +" é de " + quantidadeAtual);
+                    System.out.println("ALERTA ! Você irá substituir a quantidade atual do produto em estoque");
+                    System.out.println("**********************************************************************");
+                    System.out.println("Qual a quantidade real de " + name + " existe no estoque fisico ?");
+                    System.out.println("**********************************************************************");
+                        newQtde = input.nextInt(); 
+                    System.out.println("**********************************************************************");
+                    System.out.println("Qual seu lote?");
+                    System.out.println("**********************************************************************");
+                        newLote = input.next(); 
+                    System.out.println("**********************************************************************");
+                        System.out.println("Qual a data de validade?");
+                    System.out.println("**********************************************************************");
+                        newDt = input.next();                        
+                    System.out.println("**********************************************************************");
+                    
+                    // Coloca na variavel o codigo para fazer o update no banco de dados
+                    String sqlUpdate = "UPDATE produtos set qtde = ?, lote = ?, Dtvalidade = ? where ID = ?"; 
+                    
+                    // Comando para fazer o update 
+                    PreparedStatement stmtUpdate = conn.prepareStatement(sqlUpdate); 
+                    
+                    // Substitui na String sqlUpdate os valores com interrogação 
+                    stmtUpdate.setInt(1, newQtde);
+                    stmtUpdate.setString(2, newLote);
+                    stmtUpdate.setString(3, newDt);
+                    stmtUpdate.setInt(4, codProd);
+                    
+                    // Pega quantas linhas foram afetadas 
+                    int linhasAfetadas = stmtUpdate.executeUpdate();
+                    
+                    // Se existir linhas afetadas 
+                    if (linhasAfetadas > 0) {
+                        System.out.println("Dados do produto atualizados com sucesso!");
+                        System.out.println("Novos dados para o produto: Qtde: " + newQtde + "/ lote: " + newLote + "/ Validade: " +newDt);
+                        System.out.println("**********************************************************************");
+                    } 
+                    
+                    else {
+                        System.out.println("Erro ao atualizar os dados.");
+                        System.out.println("**********************************************************************");
+                        busca = false; 
+                    }
+                }
+                
+                // se não encontrar o código ele vai pedir novamente pra digitar o código
+                else {
+                    System.out.println("Código NÃO encontrado, selecione um produto cadastrado");
+                    busca = false;
+                    System.out.println("Digite novamente o código do produto");
+                    System.out.println("**********************************************************************");
+                }
+            }  
+            // se ocorrer algum erro, vai mostrar a pilha de execução do erro 
+            catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("**********************************************************************");
+            }
+   
+        } while(busca==false);        
+    }
+        
+        
+        
+        
+    }
     
     
 
