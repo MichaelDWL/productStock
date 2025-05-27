@@ -6,7 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +24,7 @@ public class funcoes {
     boolean busca = true; 
     int codProd; 
     
+    // Consultar lista de produtos 
     public void consultarProd(){
         
         try{
@@ -48,8 +53,9 @@ public class funcoes {
         } catch (Exception e) {
             System.out.println("Erro ao consultar: " + e.getMessage());
           }
-    }    
- 
+    }   
+    
+    // Criar produtos 
     public void CreateProd() {
 
         String nome, und, controleEspecial;
@@ -82,7 +88,8 @@ public class funcoes {
             stmt.setString(2, und);
             stmt.setString(3, controleEspecial);
             //stmt.setInt(3, 10);
-
+            
+            // Retorna o resultado 
             int linhasAfetadas = stmt.executeUpdate();
 
             if (linhasAfetadas > 0) {
@@ -94,6 +101,7 @@ public class funcoes {
         }
     }
     
+    // Baixa de Produtos 
     public void baixaDprod() {
         int options; 
         
@@ -116,7 +124,8 @@ public class funcoes {
         
         
     }
-
+    
+    // Invetariar produto 
     public void invProd() { 
         
         int quantidadeAtual,newQtde;
@@ -191,24 +200,135 @@ public class funcoes {
                 System.out.println("**********************************************************************");
               }
     }    
+    
     // Entrada de nota fiscal    
     public void notaFiscal() {
-        int nFe; 
-        String dtEmit;
-        float vrTotal, vrUnd;
         
-        // informações da nota fiscal 
-        System.out.print("Digite o numero da Nota Fiscal: ");
-            nFe = input.nextInt();
-        System.out.print("Digite sua data de emissão: (dd/mm/aaaa)");
-            dtEmit = input.next(); 
-        System.out.print("Digite o valor total da nota: ");
-            vrTotal = input.nextFloat(); 
-        System.out.println("**********************************************************************");
+        int nFe, qtdeDB, qtdeNFE, qtdeSOMA,idNotaFiscal = -1;
+        String dtEmit,name;
+        Double vrTotal, vrUn;
+        busca = false; 
+            
+            // PARTE 1 - Informações da nota fiscal 
+        do{ System.out.print("Digite o numero da Nota Fiscal: ");
+                nFe = input.nextInt();
+            System.out.print("Digite sua data de emissão (dd/mm/yyyy): ");
+                dtEmit = input.next();
+
+            // Converte a data para ser amarzenada de forma correta no banco de dados 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate data = LocalDate.parse(dtEmit, formatter);
+
+            System.out.print("Digite o valor total da nota: ");
+                vrTotal = input.nextDouble(); 
+
+            // PARTE 2 - Adiciona a nota fiscal no banco 
+            try {
+                
+                // Criar uma nota fiscal no banco 
+                String sql_nfe = "insert into nota_fiscal (num_nfe, data_emissao, Vrtotal) value (?,?,?)";    
+                PreparedStatement stmt = conn.prepareStatement(sql_nfe,Statement.RETURN_GENERATED_KEYS);
+                
+                // Substitui "?" em sql_nfe
+                stmt.setInt(1, nFe);
+                stmt.setDate(2, java.sql.Date.valueOf(data));
+                stmt.setDouble(3, vrTotal);
+                
+                // Executa o Update 
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+
+                if (rs.next()) {
+                idNotaFiscal = rs.getInt(1);
+                }
+                if (idNotaFiscal == -1) {
+                System.out.println("Erro: ID da nota fiscal não foi gerado!");
+                }
+                busca = true;
+                
+            } catch (SQLException ex) {
+                System.out.println("Erro ao entrar com a nota");
+                Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("**********************************************************************");
+              }
+            
+        } while (busca == false);     
         
-        System.out.println("Selecine o Produto que você deseja entrar");
+            // PARTE 3 - DADOS DO PRODUTO      
+        do{ System.out.println("**********************************************************************");
+            System.out.println("Selecine o Produto que você deseja entrar");
+
+            ResultSet resultado = verificaDB();
+
+            System.out.println("**********************************************************************");
+            System.out.print("Digite a quantidade do produto: ");
+                qtdeNFE = input.nextInt(); 
+            System.out.print("Digite seu valor unitário: ");
+                vrUn = input.nextDouble(); 
+            System.out.println("**********************************************************************");
+
+            // PARTE 3 - ADICIONAR QTDE NO BANCO 
+            
+            busca = false; 
+            
+            try {   
+                    if (resultado.next()){
+                        name = resultado.getString("nome");
+                        codProd = resultado.getInt("ID");
+                        qtdeDB = resultado.getInt("qtde");
+                        qtdeSOMA = qtdeDB + qtdeNFE;
+                    
+                        // Coloca na variavel o codigo para fazer o update no banco de dados
+                        String sqlUpdate = "UPDATE produtos set qtde = ?, Vr = ? where ID = ?"; 
+
+                        // Comando para fazer o update 
+                        PreparedStatement stmtUpdate = conn.prepareStatement(sqlUpdate); 
+
+                        // Substitui na String sqlUpdate os valores com interrogação 
+                        stmtUpdate.setInt(1, qtdeSOMA);
+                        stmtUpdate.setDouble(2, vrUn);
+                        stmtUpdate.setInt(3, codProd);
+
+                        // Pega quantas linhas foram afetadas 
+                        int linhasAfetadas = stmtUpdate.executeUpdate();
+
+                        // Se existir linhas afetadas 
+                        if (linhasAfetadas > 0) {
+                            System.out.println("Nota Fiscal Entrada com sucesso");
+                            System.out.println("Novos dados para " +name+": Qtde: " + qtdeSOMA + " Vr: "+vrUn);
+                            System.out.println("**********************************************************************");
+                            busca = true; 
+                        } 
+
+                        else {
+                            System.out.println("Erro ao entrar com a nota Fiscal !");
+                            System.out.println("**********************************************************************");
+                        }
+                    
+                    } else{
+                        System.out.println("Nenhum resultado encontrado");
+                    }
+
+                    // PARTE 5 - Adiciona a nota e o produto na tabela comparativa 
+                    String notaXprodsql = "insert into notaxprod (nota_id, prod_id, qtde_ent) value (?,?,?)"; 
+
+                    // Comando para fazer o insert  
+                    PreparedStatement stmt_nt_pr = conn.prepareStatement(notaXprodsql);
+                    
+                    stmt_nt_pr.setInt(1, idNotaFiscal);
+                    stmt_nt_pr.setInt(2, codProd);
+                    stmt_nt_pr.setInt(3, qtdeNFE);
+                    
+                    // Executa o Update 
+                    stmt_nt_pr.executeUpdate();
+                    
+                } catch (SQLException ex) {
+                Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        // Se ocorreu algum erro, recomece o processo  
+        } while (busca == false);           
     }
-    
+ 
     // verifica se o produto digitado existe no banco de dados 
     public ResultSet verificaDB (){
             ResultSet resultado = null; 
@@ -219,7 +339,6 @@ public class funcoes {
                 
         do{ codProd = input.nextInt();
             System.out.println("**********************************************************************");
-            
             try {
                 // Seleciona um produto dentro da tabela produto onde o ID é igual a...
                 String sql = "select * from produtos where ID = ?";
@@ -260,9 +379,11 @@ public class funcoes {
         
     }
     
+    
+    
 }    
         
-    
+
     
     
 
