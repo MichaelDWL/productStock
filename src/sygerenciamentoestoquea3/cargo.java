@@ -11,7 +11,7 @@ public class cargo {
     int options,moreOrclose;
     
     funcoes funct = new funcoes(); 
-    
+               
     public void auxAlmoxarife(){
             
         do {
@@ -62,9 +62,9 @@ public class cargo {
         do {
             System.out.println("1 - Realizar baixa");
             System.out.println("2 - Criar Produto"); // ok 
-            System.out.println("3 - Inventario de Produtos ");
-            System.out.println("4 - Entrar com notas ficais");
-            System.out.println("5 - Relatórios");
+            System.out.println("3 - Inventario de Produtos "); // ok 
+            System.out.println("4 - Entrar com notas ficais"); // ok 
+            System.out.println("5 - Relatórios"); 
             System.out.println("**********************************************************************");
                 options = input.nextInt(); 
 
@@ -128,7 +128,19 @@ public class cargo {
     
             case 4: 
             // Metodo de Entrar com notas Ficais 
-            break;
+                System.out.println("**********************************************************************");
+                System.out.println(" - Entrar com Nota Fiscal - ");
+                System.out.println("**********************************************************************");
+                funct.notaFiscal(); 
+                
+                moreOrClose();
+                
+                if (moreOrclose == 1){
+                    System.out.println("O que você gostaria de fazer agora ?");
+                    System.out.println("**********************************************************************");
+                    almoxarife();
+                }
+                break;
             
             case 5: 
             // Tirar Relatório 
