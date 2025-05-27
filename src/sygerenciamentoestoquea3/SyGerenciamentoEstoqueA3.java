@@ -24,7 +24,7 @@ public class SyGerenciamentoEstoqueA3 {
         String nome; 
         cargo cargoF = new cargo(); 
      
-
+        
     System.out.println("Olá, Seja bem vindo !");
     System.out.println("Por gentileza, insira seu nome: ");
     System.out.println("----------------------------------------------------------------------");
@@ -32,6 +32,7 @@ public class SyGerenciamentoEstoqueA3 {
         
         System.out.println("----------------------------------------------------------------------");
      
+                                    //MENU seleção de cargo 
         do{
            System.out.println("Para prosseguir Selecione o Seu cargo: ");
 
@@ -56,8 +57,8 @@ public class SyGerenciamentoEstoqueA3 {
 
            System.out.println("Seja bem vindo "+nome+"! O que gostaria de fazer hoje? " );
            
-           System.out.println("**********************************************************************");
-
+           System.out.println("**********************************************************************");                             
+           
            switch (cargo){
 
            // CARGO : AUX DE FARMÁCIA 
