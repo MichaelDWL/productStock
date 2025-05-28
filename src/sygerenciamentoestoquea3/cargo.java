@@ -58,6 +58,7 @@ public class cargo {
     }
     
     public void almoxarife(){
+        
     
         do {
             System.out.println("1 - Realizar baixa");
@@ -179,6 +180,115 @@ public class cargo {
     }
         
     public void farmaceutico(){
+        
+    }
+    
+    public void admin(){
+        
+        String login,senha,name_user,cargo_user;
+        
+        senha = null;  
+        cargo_user = null; 
+        
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("ADMINISTRADOR - T.I");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("O que você deseja fazer hoje ?");
+        System.out.println("  ");
+        do{ System.out.println("1 - Criar usuário");
+            System.out.println("2 - Alterar Senha");
+            System.out.println("3 - Alterar Dados do usuário");
+            System.out.println("----------------------------------------------------------------------");
+            options = input.nextInt();
+            System.out.println("----------------------------------------------------------------------");
+
+            if (options < 1 || options > 3){
+                    System.out.println("Opção inválida, por favor escolha uma opção de 1 a 3");
+                    System.out.println("----------------------------------------------------------------------");
+                    System.out.println("O que Você gostaria de fazer ?");
+                    System.out.println("----------------------------------------------------------------------"); 
+            }
+            
+        } while (options < 1 || options > 3);
+        
+        switch (options){ 
+            // CRIAR USUÁRIO 
+            case 1:
+                System.out.println(" - CRIAR USUÁRIO - ");
+                System.out.println("----------------------------------------------------------------------");
+                
+                System.out.print("Digite qual o nome completo do usuário: ");
+                    name_user = input.next(); 
+                
+                do{ System.out.println("Digite qual cargo o usário irá exercer: ");
+                    System.out.println("1 - Aux de almoxarife");
+                    System.out.println("2 - Almoxarife");
+                    System.out.println("3 - Farmacêutico");
+                    System.out.println("4 - Admin");
+                        options = input.nextInt();
+
+                    if (options < 1 || options > 4){
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Opção inválida, por favor escolha uma opção de 1 a 4");
+                        System.out.println("----------------------------------------------------------------------");
+                    }
+                } while (options < 1 || options > 4); 
+                
+                // Padronizar para evitar erros no banco de dados 
+                switch (options){
+                    case 1:
+                        cargo_user = "AuxAlmoxarife"; 
+                    break;
+                    case 2:
+                        cargo_user = "Almoxarife";
+                    break;
+                    case 3:
+                        cargo_user = "Farmacêutico";
+                    break;
+                    case 4:
+                        cargo_user = "Admin"; 
+                    break;
+                }
+                
+                System.out.print("Digite qual vai ser o login desse usuário: ");
+                    login = input.next();
+                
+                System.out.println("----------------------------------------------------------------------");
+                
+                // metodo de definir senha como padrão 
+                funct.resetPassword(login);
+                
+                System.out.println("----------------------------------------------------------------------");
+                
+                // Cria o usuário 
+                funct.createUser(name_user, login, senha, cargo_user);
+            break;
+            
+                // Redefinir senha 
+            case 2: 
+                System.out.print("Digite o login do usuário: ");
+                    login = input.next(); 
+                funct.resetPassword(login);
+            break;
+                
+            case 3:
+                System.out.println(" - Alterar dados do usuário - ");
+                System.out.println("----------------------------------------------------------------------");
+                System.out.print("Digite o login do usuário: ");
+                    login = input.next(); 
+                
+                System.out.println("O que você deseja alterar no cadastro? ");    
+                System.out.println(" ");
+                System.out.println("1 - Nome do usuário ");
+                System.out.println("2 - Login do usuário ");
+                System.out.println("3 - Cargo do usuário");
+                System.out.println("1 - Nome do usuário");
+                    
+                System.out.println("");
+            break; 
+                
+        }
+            
         
     }
     
