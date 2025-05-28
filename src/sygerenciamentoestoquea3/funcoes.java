@@ -330,71 +330,6 @@ public class funcoes {
         } while (busca == false);           
     }
     
-    // Cria um novo usuário 
-    public void createUser(String n, String l, String s, String c){ 
-        
-        String name_user, login, senha, cargo_user;
-        // recebe os dados de fora da função 
-        name_user = n;
-        login = l; 
-        senha = s; 
-        cargo_user = c;
-        
-        try {
-            String sql = "INSERT into usuario (nome,login,senha,cargo_user) value (?,?,?,?)";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            
-            stmt.setString(1, name_user);
-            stmt.setString(2, login);
-            stmt.setString(3, senha);
-            stmt.setString(4, cargo_user);
-            
-            int linhasAfetadas = stmt.executeUpdate();
-
-            if (linhasAfetadas > 0) {
-                System.out.println("Usuário Criado com sucesso!");
-            }
-
-        } catch (Exception e) {
-            System.out.println("Erro ao Criar Usuário: " + e.getMessage());
-        }
-         
-    }
-    
-    // Defini a senha para o valor padrão 
-    public void resetPassword(String Login){
-        
-        String login = Login;
-        
-        try {
-            // Coloca na variavel o codigo para fazer o update no banco de dados
-            String sqlUpdate = "UPDATE usuarios set senha = 0000 where login = ?"; 
-
-            // Comando para fazer o update 
-            PreparedStatement stmtUpdate; 
-            stmtUpdate = conn.prepareStatement(sqlUpdate);
-
-            // Substitui na String sqlUpdate os valores com interrogação 
-            stmtUpdate.setString(1, login);
-            
-            // Pega quantas linhas foram afetadas 
-            int linhasAfetadas = stmtUpdate.executeUpdate();
-
-            // Se existir linhas afetadas 
-            if (linhasAfetadas > 0) {
-                System.out.println("Senha Definida como padrão: 0000");
-            } 
-
-            else {
-                System.out.println("Erro ao definir senha");
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
     // verifica se o produto digitado existe no banco de dados 
     public ResultSet verificaDB (){
             ResultSet resultado = null; 
@@ -446,8 +381,163 @@ public class funcoes {
     }
     
     
+                        // CONTROLE DO ADMIN
+    
+    // Cria um novo usuário 
+    public void createUser(String n, String l, String s, String c){ 
+        
+        String name_user, login, senha, cargo_user;
+        // recebe os dados de fora da função 
+        name_user = n;
+        login = l; 
+        senha = s; 
+        cargo_user = c;
+        
+        try {
+            String sql = "INSERT into usuario (nome,login,senha,cargo_user) value (?,?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, name_user);
+            stmt.setString(2, login);
+            stmt.setString(3, senha);
+            stmt.setString(4, cargo_user);
+            
+            int linhasAfetadas = stmt.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                System.out.println("Usuário Criado com sucesso!");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao Criar Usuário: " + e.getMessage());
+        }
+         
+    }
+    
+    // Definir a senha para o valor padrão 0000 
+    public void resetPassword(String Login){
+        
+        String login = Login;
+        
+        try {
+            // Coloca na variavel o codigo para fazer o update no banco de dados
+            String sqlUpdate = "UPDATE usuario set senha = 0000 where login = ?"; 
+
+            // Comando para fazer o update 
+            PreparedStatement stmtUpdate; 
+            stmtUpdate = conn.prepareStatement(sqlUpdate);
+
+            // Substitui na String sqlUpdate os valores com interrogação 
+            stmtUpdate.setString(1, login);
+            
+            // Pega quantas linhas foram afetadas 
+            int linhasAfetadas = stmtUpdate.executeUpdate();
+
+            // Se existir linhas afetadas 
+            if (linhasAfetadas > 0) {
+                System.out.println("Senha Definida como padrão: 0000");
+            } 
+
+            else {
+                System.out.println("Erro ao definir senha");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    // Verifica login e senha do usuario 
+    public ResultSet verificaAcesso (String Login, String Senha){
+            
+            String login, senha;
+            
+            login = Login; 
+            senha = Senha; 
+            
+            ResultSet resultado;    
+
+            try {
+                // Seleciona um usuario dentro da tabela usuario onde o login é igual a...
+                String sql = "select * from usuario where login = ?";
+                
+                // Coloca a sintaxe de conectar/consultar na variavel stmt  
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                
+                // Substitui a interrogação que existe na string sql 
+                stmt.setString(1, login); 
+
+                // Executa a consulta e coloca o retorno dela em "Resultado"
+                resultado = stmt.executeQuery();
+                
+                // Verifica se existe algum resultado 
+                if (resultado.next()) {
+                
+                    String senhadb = resultado.getString("senha");
+                
+                    if (senha.equals(senhadb)){
+                        //Se o login e a senha tiver correto, retorna o resultado da busca
+                        return resultado;
+                    }
+                    else { 
+                        System.out.println("Senha incorreta !");
+                    }
+                }
+                else {
+                    System.out.println("login não econtrado");
+                }
+            }  
+            // se ocorrer algum erro, vai mostrar a pilha de execução do erro 
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return null;
+    }
+    
+    // Verifica no banco e retorna as informações do usuario 
+    public ResultSet verificaUsuario (String Login){
+        
+        String login = Login;
+        ResultSet resultado; 
+        
+        try {
+                // Seleciona um usuario dentro da tabela usuario onde o login é igual a...
+                String sql = "select * from usuario where login = ?";
+                
+                // Coloca a sintaxe de conectar/consultar na variavel stmt  
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                
+                // Substitui a interrogação que existe na string sql 
+                stmt.setString(1, login); 
+
+                // Executa a consulta e coloca o retorno dela em "Resultado"
+                resultado = stmt.executeQuery();
+                
+                // Verifica se existe algum resultado 
+                if (resultado.isBeforeFirst()) {
+                    System.out.println("Login encontrado !");
+                    return resultado; 
+                }
+                else {
+                    System.out.println("Login não econtrado");
+                }
+            }  
+            // se ocorrer algum erro, vai mostrar a pilha de execução do erro 
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return null;
+    }
+        
+        
+        
+    }
+
+    
    
-}    
+   
+    
         
 
     
