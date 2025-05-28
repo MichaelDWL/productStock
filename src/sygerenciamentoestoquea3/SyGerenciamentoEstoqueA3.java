@@ -25,6 +25,7 @@ public class SyGerenciamentoEstoqueA3 {
         cargo cargoF = new cargo(); 
      
         
+    System.out.println("----------------------------------------------------------------------");
     System.out.println("Olá, Seja bem vindo !");
     System.out.println("Por gentileza, insira seu nome: ");
     System.out.println("----------------------------------------------------------------------");
@@ -38,14 +39,14 @@ public class SyGerenciamentoEstoqueA3 {
 
            System.out.println("**********************************************************************");
 
-           System.out.println(" 1 - Aux de Farmácia ");
+           System.out.println(" 1 - ADMIN ");
            System.out.println(" 2 - Aux de Almoxarife/Suprimentos");
            System.out.println(" 3 - Almoxarife");
            System.out.println(" 4 - Farmacêutico");
            
            System.out.println("**********************************************************************");
                cargo = input.nextInt();
-
+            
            if (cargo < 0 || cargo > 4){
                System.out.println("**********************************************************************");
                System.out.println("Opção inválida, por favor escolha uma opção de 1 a 4");
@@ -61,10 +62,10 @@ public class SyGerenciamentoEstoqueA3 {
            
            switch (cargo){
 
-           // CARGO : AUX DE FARMÁCIA 
+           // CARGO : ADMINISTRADOR 
 
                 case 1: 
-
+                    cargoF.admin();
                 break; 
            
            // CARGO : AUX DE ALMOXARIFE     
@@ -75,7 +76,7 @@ public class SyGerenciamentoEstoqueA3 {
                     
            // CARGO : ALMOXARIFE         
                     
-                case 3: 
+                case 3:
                    cargoF.almoxarife(); 
                 break; 
 
