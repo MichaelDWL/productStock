@@ -89,7 +89,7 @@ public class funcoes {
             stmt.setString(3, controleEspecial);
             //stmt.setInt(3, 10);
             
-            // Retorna o resultado 
+            // Executa e Retorna o resultado 
             int linhasAfetadas = stmt.executeUpdate();
 
             if (linhasAfetadas > 0) {
@@ -276,6 +276,7 @@ public class funcoes {
                         name = resultado.getString("nome");
                         codProd = resultado.getInt("ID");
                         qtdeDB = resultado.getInt("qtde");
+                        
                         qtdeSOMA = qtdeDB + qtdeNFE;
                     
                         // Coloca na variavel o codigo para fazer o update no banco de dados
@@ -328,7 +329,72 @@ public class funcoes {
         // Se ocorreu algum erro, recomece o processo  
         } while (busca == false);           
     }
- 
+    
+    // Cria um novo usuário 
+    public void createUser(String n, String l, String s, String c){ 
+        
+        String name_user, login, senha, cargo_user;
+        // recebe os dados de fora da função 
+        name_user = n;
+        login = l; 
+        senha = s; 
+        cargo_user = c;
+        
+        try {
+            String sql = "INSERT into usuario (nome,login,senha,cargo_user) value (?,?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, name_user);
+            stmt.setString(2, login);
+            stmt.setString(3, senha);
+            stmt.setString(4, cargo_user);
+            
+            int linhasAfetadas = stmt.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                System.out.println("Usuário Criado com sucesso!");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao Criar Usuário: " + e.getMessage());
+        }
+         
+    }
+    
+    // Defini a senha para o valor padrão 
+    public void resetPassword(String Login){
+        
+        String login = Login;
+        
+        try {
+            // Coloca na variavel o codigo para fazer o update no banco de dados
+            String sqlUpdate = "UPDATE usuarios set senha = 0000 where login = ?"; 
+
+            // Comando para fazer o update 
+            PreparedStatement stmtUpdate; 
+            stmtUpdate = conn.prepareStatement(sqlUpdate);
+
+            // Substitui na String sqlUpdate os valores com interrogação 
+            stmtUpdate.setString(1, login);
+            
+            // Pega quantas linhas foram afetadas 
+            int linhasAfetadas = stmtUpdate.executeUpdate();
+
+            // Se existir linhas afetadas 
+            if (linhasAfetadas > 0) {
+                System.out.println("Senha Definida como padrão: 0000");
+            } 
+
+            else {
+                System.out.println("Erro ao definir senha");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     // verifica se o produto digitado existe no banco de dados 
     public ResultSet verificaDB (){
             ResultSet resultado = null; 
@@ -380,7 +446,7 @@ public class funcoes {
     }
     
     
-    
+   
 }    
         
 
