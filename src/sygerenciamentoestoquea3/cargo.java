@@ -1,14 +1,16 @@
 
 package sygerenciamentoestoquea3;
+import java.sql.ResultSet;
 import java.util.Scanner;
 /**
  *
- * @author MDWL
+ * @author Michael_DWL
  */
 public class cargo {
     
     Scanner input = new Scanner(System.in);
     int options,moreOrclose;
+    boolean buscar = true;
     
     funcoes funct = new funcoes(); 
                
@@ -187,7 +189,7 @@ public class cargo {
         
         String login,senha,name_user,cargo_user;
         
-        senha = null;  
+        senha = "0000";  
         cargo_user = null; 
         
         System.out.println("----------------------------------------------------------------------");
@@ -198,8 +200,11 @@ public class cargo {
         do{ System.out.println("1 - Criar usuário");
             System.out.println("2 - Alterar Senha");
             System.out.println("3 - Alterar Dados do usuário");
+            System.out.println("  ");
             System.out.println("----------------------------------------------------------------------");
             options = input.nextInt();
+            //Corrige o bug do enter pra não pular a linha no proximo scanner
+            input.nextLine();
             System.out.println("----------------------------------------------------------------------");
 
             if (options < 1 || options > 3){
@@ -218,7 +223,7 @@ public class cargo {
                 System.out.println("----------------------------------------------------------------------");
                 
                 System.out.print("Digite qual o nome completo do usuário: ");
-                    name_user = input.next(); 
+                    name_user = input.nextLine(); 
                 
                 do{ System.out.println("Digite qual cargo o usário irá exercer: ");
                     System.out.println("1 - Aux de almoxarife");
@@ -252,16 +257,12 @@ public class cargo {
                 
                 System.out.print("Digite qual vai ser o login desse usuário: ");
                     login = input.next();
-                
-                System.out.println("----------------------------------------------------------------------");
-                
-                // metodo de definir senha como padrão 
-                funct.resetPassword(login);
-                
                 System.out.println("----------------------------------------------------------------------");
                 
                 // Cria o usuário 
                 funct.createUser(name_user, login, senha, cargo_user);
+                System.out.println("Senha padrão definida como: 0000");
+                System.out.println("----------------------------------------------------------------------");
             break;
             
                 // Redefinir senha 
@@ -274,22 +275,69 @@ public class cargo {
             case 3:
                 System.out.println(" - Alterar dados do usuário - ");
                 System.out.println("----------------------------------------------------------------------");
-                System.out.print("Digite o login do usuário: ");
-                    login = input.next(); 
+                do{ System.out.print("Digite o login do usuário: ");
+                        login = input.next(); 
+                    ResultSet rs = funct.verificaUsuario(login);
+                    if (rs == null){
+                        buscar = false; 
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Digite novamente o login do usuário");
+                        System.out.println("----------------------------------------------------------------------");
+                    }
+                } while(buscar = false);
                 
-                System.out.println("O que você deseja alterar no cadastro? ");    
-                System.out.println(" ");
-                System.out.println("1 - Nome do usuário ");
-                System.out.println("2 - Login do usuário ");
-                System.out.println("3 - Cargo do usuário");
-                System.out.println("1 - Nome do usuário");
+                System.out.println("----------------------------------------------------------------------");
+                do{ System.out.println("O que você deseja alterar no cadastro? ");    
+                    System.out.println(" ");
+                    System.out.println("1 - Nome do usuário ");
+                    System.out.println("2 - Login do usuário ");
+                    System.out.println("3 - Cargo do usuário"); 
+                    System.out.println(" ");
+                    System.out.println("----------------------------------------------------------------------");
+                        options = input.nextInt(); 
+                    System.out.println("----------------------------------------------------------------------");
+                    if (options < 0 || options > 3) {
+                        System.out.println("Opção inválida, por favor escolha uma opção de 1 a 4");
+                        System.out.println("----------------------------------------------------------------------");
+                    }
+                } while(options < 0 || options > 3);
+                
+                switch (options){
                     
-                System.out.println("");
-            break; 
-                
-        }
-            
-        
+                    case 1:
+                        funct.alterName(login);
+                        
+                        // Fechar ou continuar 
+                        moreOrClose(); 
+                        if (moreOrclose == 1){
+                            System.out.println("O que você gostaria de fazer agora ?");
+                            System.out.println("----------------------------------------------------------------------");
+                            admin();
+                        }
+                    break;
+                    case 2:
+                        funct.alterLogin(login);
+                        
+                        // Fechar ou continuar 
+                        if (moreOrclose == 1){
+                            System.out.println("O que você gostaria de fazer agora ?");
+                            System.out.println("----------------------------------------------------------------------");
+                            admin();
+                        }
+                    break;
+                    case 3:
+                        funct.alterCargo(login);
+                        
+                        // Fechar ou continuar 
+                        if (moreOrclose == 1){
+                            System.out.println("O que você gostaria de fazer agora ?");
+                            System.out.println("----------------------------------------------------------------------");
+                            admin();
+                        }
+                    break;
+                } 
+            break;        
+        }    
     }
     
     public void moreOrClose(){
@@ -297,7 +345,7 @@ public class cargo {
         System.out.println("Deseja fazer mais algo ou Deseja sair ?");
             System.out.println("1 - Voltar para o Menu");
             System.out.println("2 - Sair");
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
                 moreOrclose = input.nextInt();     
     } 
 
