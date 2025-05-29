@@ -380,7 +380,6 @@ public class funcoes {
         
     }
     
-    
                         // CONTROLE DO ADMIN
     
     // Cria um novo usuário 
@@ -520,7 +519,7 @@ public class funcoes {
                     return resultado; 
                 }
                 else {
-                    System.out.println("Login não econtrado");
+                    System.out.println("Login não econtrado"); 
                 }
             }  
             // se ocorrer algum erro, vai mostrar a pilha de execução do erro 
@@ -529,9 +528,115 @@ public class funcoes {
             }
         return null;
     }
+    
+    // Altera os dados do usuário
+    public void alterLogin (String Login){
         
+        String login,newLogin;
+        login = Login; 
         
+        System.out.print("Digite o novo login: ");
+            newLogin = input.nextLine(); 
         
+        // Coloca na variavel o codigo para fazer o update no banco de dados
+        String sqlUpdate = "UPDATE usuario set login = ? where login = ?"; 
+
+        // Comando para fazer o update 
+        PreparedStatement stmtUpdate; 
+        try {
+            stmtUpdate = conn.prepareStatement(sqlUpdate);
+
+        // Substitui na String sqlUpdate os valores com interrogação 
+        stmtUpdate.setString(1, newLogin);
+        stmtUpdate.setString(2, login);
+
+        // Pega quantas linhas foram afetadas 
+        int linhasAfetadas = stmtUpdate.executeUpdate();
+
+        // Se existir linhas afetadas 
+        if (linhasAfetadas > 0) {
+            System.out.println("Login do usuário atualizado com sucesso!");
+        } 
+
+        else {
+            System.out.println("Erro ao atualizar os dados de login."); 
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void alterCargo (String Login){
+        
+        String login,newCargo;
+        login = Login; 
+        
+        System.out.print("Digite o novo Cargo: ");
+            newCargo = input.nextLine(); 
+        
+        // Coloca na variavel o codigo para fazer o update no banco de dados
+        String sqlUpdate = "UPDATE usuario set cargo_user = ? where login = ?"; 
+
+        // Comando para fazer o update 
+        PreparedStatement stmtUpdate; 
+        try {
+            stmtUpdate = conn.prepareStatement(sqlUpdate);
+
+        // Substitui na String sqlUpdate os valores com interrogação 
+        stmtUpdate.setString(1, newCargo);
+        stmtUpdate.setString(2, login);
+
+        // Pega quantas linhas foram afetadas 
+        int linhasAfetadas = stmtUpdate.executeUpdate();
+
+        // Se existir linhas afetadas 
+        if (linhasAfetadas > 0) {
+            System.out.println("Cargo do usuário atualizado com sucesso!");
+        } 
+
+        else {
+            System.out.println("Erro ao atualizar os dados do Cargo do usuário."); 
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+    public void alterName (String Login){
+        
+        String login,newName;
+        login = Login; 
+        
+        System.out.print("Digite o novo Cargo: ");
+            newName = input.nextLine(); 
+        
+        // Coloca na variavel o codigo para fazer o update no banco de dados
+        String sqlUpdate = "UPDATE usuario set nome = ? where login = ?"; 
+
+        // Comando para fazer o update 
+        PreparedStatement stmtUpdate; 
+        try {
+            stmtUpdate = conn.prepareStatement(sqlUpdate);
+
+        // Substitui na String sqlUpdate os valores com interrogação 
+        stmtUpdate.setString(1, newName);
+        stmtUpdate.setString(2, login);
+
+        // Pega quantas linhas foram afetadas 
+        int linhasAfetadas = stmtUpdate.executeUpdate();
+
+        // Se existir linhas afetadas 
+        if (linhasAfetadas > 0) {
+            System.out.println("Nome do usuário atualizado com sucesso!");
+        } 
+
+        else {
+            System.out.println("Erro ao atualizar os dados do nome do usuário."); 
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
     }
 
     
