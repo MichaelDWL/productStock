@@ -7,7 +7,9 @@ package sygerenciamentoestoquea3;
 
 
 import java.util.Scanner;
-
+import java.sql.*; 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author maiqu
@@ -17,76 +19,87 @@ public class SyGerenciamentoEstoqueA3 {
 
     public static void main(String[] args) {
         
-        Scanner input = new Scanner(System.in);
         conexaodb.conectar();
-        
-        int cargo, options; 
-        String nome; 
+        Scanner input = new Scanner(System.in);
         cargo cargoF = new cargo(); 
-     
+        funcoes funct = new funcoes();
+        
+        String loginMain, senhaMain, nomeCurto, cargoMain = null;        
+        int cargo, options; 
+        
         
     System.out.println("----------------------------------------------------------------------");
+    System.out.println(" ");
     System.out.println("Olá, Seja bem vindo !");
-    System.out.println("Por gentileza, insira seu nome: ");
+    System.out.println(" ");
+    System.out.print("Por gentileza, insira seu Login: ");
+        loginMain = input.nextLine();
+    System.out.print("Por gentileza, insira sua Senha: ");
+        senhaMain = input.nextLine();
+    System.out.println(" ");
     System.out.println("----------------------------------------------------------------------");
-        nome = input.nextLine();
+    
+    // Pega nome e sobre nome do Usuário 
+    nomeCurto = funct.nomeCurto(loginMain);
+    
+    // Verifica acesso do usuário 
+    ResultSet rs = funct.verificaAcesso(loginMain, senhaMain); 
+    
+        try {        
+            if (rs.next()){
+               cargoMain = rs.getString("cargo_user");
+            }
+            } catch (SQLException ex) {
+            Logger.getLogger(SyGerenciamentoEstoqueA3.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
-        System.out.println("----------------------------------------------------------------------");
-     
-                                    //MENU seleção de cargo 
-        do{
-           System.out.println("Para prosseguir Selecione o Seu cargo: ");
-
-           System.out.println("----------------------------------------------------------------------");
-
-           System.out.println(" 1 - ADMIN ");
-           System.out.println(" 2 - Aux de Almoxarife/Suprimentos");
-           System.out.println(" 3 - Almoxarife");
-           System.out.println(" 4 - Farmacêutico");
-           
-           System.out.println("----------------------------------------------------------------------");
-               cargo = input.nextInt();
+            System.out.println("----------------------------------------------------------------------");
+            System.out.println(" ");
+            System.out.println(nomeCurto + " -+- " + cargoMain);
+            System.out.println(" ");
+            System.out.println("----------------------------------------------------------------------");
+            System.out.println("----------------------------------------------------------------------");
+            System.out.println(" ");
+            System.out.println("Olá " + nomeCurto+",");
+            System.out.println(" ");
+            System.out.println("O que você gostaria de fazer hoje? ");
             
-           if (cargo < 0 || cargo > 4){
-               System.out.println("----------------------------------------------------------------------");
-               System.out.println("Opção inválida, por favor escolha uma opção de 1 a 4");
-            }  
+            // Vai pegar o cargo e retornar um numero int
+            int optCargo = funct.optCargo(cargoMain);
 
-           System.out.println("----------------------------------------------------------------------");
-
-        } while (cargo < 0 || cargo > 4);
-
-           System.out.println("Seja bem vindo "+nome+"! O que gostaria de fazer hoje? " );
            
-           System.out.println("----------------------------------------------------------------------");                             
+            //MENU seleção de cargo 
            
-           switch (cargo){
+            switch (optCargo){
 
-           // CARGO : ADMINISTRADOR 
+           // CARGO : AuxAlmoxarife
 
                 case 1: 
-                   cargoF.admin();
+                   cargoF.auxAlmoxarife();    
                 break; 
            
-           // CARGO : AUX DE ALMOXARIFE     
+           // CARGO : Almoxarife     
                 
                 case 2: 
-                   cargoF.auxAlmoxarife();    
+                   cargoF.almoxarife(); 
                 break;
                     
-           // CARGO : ALMOXARIFE         
+           // CARGO : Farmacêutico          
                     
                 case 3:
-                   cargoF.almoxarife(); 
+                   cargoF.farmaceutico();
                 break; 
 
-           // CARGO : FARMACÊUTICO         
+           // CARGO : Admin 
 
                case 4: 
-                   cargoF.farmaceutico();
+                   cargoF.admin();
                break; 
            }
 
+        System.out.println(" ");    
+        System.out.println(" ");    
+        System.out.println(" ");    
         System.out.println("Até a proxima, tenha um bom trabalho !");
 
 
