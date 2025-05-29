@@ -37,35 +37,35 @@ public class SyGerenciamentoEstoqueA3 {
         do{
            System.out.println("Para prosseguir Selecione o Seu cargo: ");
 
-           System.out.println("**********************************************************************");
+           System.out.println("----------------------------------------------------------------------");
 
            System.out.println(" 1 - ADMIN ");
            System.out.println(" 2 - Aux de Almoxarife/Suprimentos");
            System.out.println(" 3 - Almoxarife");
            System.out.println(" 4 - Farmacêutico");
            
-           System.out.println("**********************************************************************");
+           System.out.println("----------------------------------------------------------------------");
                cargo = input.nextInt();
             
            if (cargo < 0 || cargo > 4){
-               System.out.println("**********************************************************************");
+               System.out.println("----------------------------------------------------------------------");
                System.out.println("Opção inválida, por favor escolha uma opção de 1 a 4");
-           }  
+            }  
 
-           System.out.println("**********************************************************************");
+           System.out.println("----------------------------------------------------------------------");
 
         } while (cargo < 0 || cargo > 4);
 
            System.out.println("Seja bem vindo "+nome+"! O que gostaria de fazer hoje? " );
            
-           System.out.println("**********************************************************************");                             
+           System.out.println("----------------------------------------------------------------------");                             
            
            switch (cargo){
 
            // CARGO : ADMINISTRADOR 
 
                 case 1: 
-                    cargoF.admin();
+                   cargoF.admin();
                 break; 
            
            // CARGO : AUX DE ALMOXARIFE     
