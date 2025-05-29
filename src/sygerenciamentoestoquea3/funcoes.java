@@ -1,14 +1,10 @@
 
 package sygerenciamentoestoquea3;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.*; 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -156,15 +152,15 @@ public class funcoes {
                 System.out.println("Qual a quantidade real de " + name + " existe no estoque fisico ?");
                 System.out.println("----------------------------------------------------------------------");
                     newQtde = input.nextInt(); 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println("Qual seu lote?");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                     newLote = input.next(); 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                     System.out.println("Qual a data de validade?  (dd/mm/aaaa)");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                     newDt = input.next();                        
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
 
                 // Coloca na variavel o codigo para fazer o update no banco de dados
                 String sqlUpdate = "UPDATE produtos set qtde = ?, lote = ?, Dtvalidade = ? where ID = ?"; 
@@ -185,19 +181,19 @@ public class funcoes {
                 if (linhasAfetadas > 0) {
                     System.out.println("Dados do produto atualizados com sucesso!");
                     System.out.println("Novos dados para o produto: Qtde: " + newQtde + "/ lote: " + newLote + "/ Validade: " +newDt);
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                 } 
 
                 else {
                     System.out.println("Erro ao atualizar os dados.");
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                     busca = false; 
                 }
                 
             }
         } catch (SQLException e) {
                 e.printStackTrace();
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
               }
     }    
     
@@ -226,7 +222,7 @@ public class funcoes {
             try {
                 
                 // Criar uma nota fiscal no banco 
-                String sql_nfe = "insert into nota_fiscal (num_nfe, data_emissao, Vrtotal) value (?,?,?)";    
+                String sql_nfe = "insert into notas_fiscais (num_nfe, data_emissao, Vrtotal) value (?,?,?)";    
                 PreparedStatement stmt = conn.prepareStatement(sql_nfe,Statement.RETURN_GENERATED_KEYS);
                 
                 // Substitui "?" em sql_nfe
@@ -237,7 +233,8 @@ public class funcoes {
                 // Executa o Update 
                 stmt.executeUpdate();
                 ResultSet rs = stmt.getGeneratedKeys();
-
+                
+                // Vai ler o resultado e pegar o ID da nota fiscal
                 if (rs.next()) {
                 idNotaFiscal = rs.getInt(1);
                 }
@@ -311,7 +308,7 @@ public class funcoes {
                     }
 
                     // PARTE 5 - Adiciona a nota e o produto na tabela comparativa 
-                    String notaXprodsql = "insert into notaxprod (nota_id, prod_id, qtde_ent) value (?,?,?)"; 
+                    String notaXprodsql = "insert into nota_prod (nota_id, prod_id, qtde_ent) value (?,?,?)"; 
 
                     // Comando para fazer o insert  
                     PreparedStatement stmt_nt_pr = conn.prepareStatement(notaXprodsql);
@@ -380,7 +377,13 @@ public class funcoes {
         
     }
     
-                        // CONTROLE DO ADMIN
+    
+    
+    
+    // CONTROLE DO ADMIN
+    
+    
+    
     
     // Cria um novo usuário 
     public void createUser(String n, String l, String s, String c){ 
@@ -393,7 +396,7 @@ public class funcoes {
         cargo_user = c;
         
         try {
-            String sql = "INSERT into usuario (nome,login,senha,cargo_user) value (?,?,?,?)";
+            String sql = "INSERT into usuarios (nome,login,senha,cargo_user) value (?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             
             stmt.setString(1, name_user);
@@ -412,8 +415,6 @@ public class funcoes {
         }
          
     }
-    
-    
     
     // Definir a senha para o valor padrão 0000 
     public void resetPassword(String Login){
@@ -461,7 +462,7 @@ public class funcoes {
 
             try {
                 // Seleciona um usuario dentro da tabela usuario onde o login é igual a...
-                String sql = "select * from usuario where login = ?";
+                String sql = "select * from usuarios where login = ?";
                 
                 // Coloca a sintaxe de conectar/consultar na variavel stmt  
                 PreparedStatement stmt = conn.prepareStatement(sql);
@@ -476,8 +477,10 @@ public class funcoes {
                 if (resultado.next()) {
                 
                     String senhadb = resultado.getString("senha");
-                
+                    
                     if (senha.equals(senhadb)){
+                        //Volta para consultar novamente 
+                        resultado.beforeFirst();
                         //Se o login e a senha tiver correto, retorna o resultado da busca
                         return resultado;
                     }
@@ -504,7 +507,7 @@ public class funcoes {
         
         try {
                 // Seleciona um usuario dentro da tabela usuario onde o login é igual a...
-                String sql = "select * from usuario where login = ?";
+                String sql = "select * from usuarios where login = ?";
                 
                 // Coloca a sintaxe de conectar/consultar na variavel stmt  
                 PreparedStatement stmt = conn.prepareStatement(sql);
@@ -531,6 +534,31 @@ public class funcoes {
         return null;
     }
     
+    public String nomeCurto(String login) {
+        String nomeCurto = null;
+
+        try {
+            // Vai pegar apenas os dois primeiros nomes do usuario 
+            String sql = "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(nome, ' ', 2), ' ', -2) AS nome_curto " +
+                         "FROM usuarios WHERE login = ?";
+            
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, login);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                nomeCurto = rs.getString("nome_curto");
+            }
+        
+        } catch (SQLException e) {
+            System.out.println("Erro ao consultar nome: " + e.getMessage());
+        }
+
+        return nomeCurto;
+    }
+
+
     // Altera os dados do usuário
     public void alterLogin (String Login){
         
@@ -541,7 +569,7 @@ public class funcoes {
             newLogin = input.nextLine(); 
         
         // Coloca na variavel o codigo para fazer o update no banco de dados
-        String sqlUpdate = "UPDATE usuario set login = ? where login = ?"; 
+        String sqlUpdate = "UPDATE usuarios set login = ? where login = ?"; 
 
         // Comando para fazer o update 
         PreparedStatement stmtUpdate; 
@@ -577,7 +605,7 @@ public class funcoes {
             newCargo = input.nextLine(); 
         
         // Coloca na variavel o codigo para fazer o update no banco de dados
-        String sqlUpdate = "UPDATE usuario set cargo_user = ? where login = ?"; 
+        String sqlUpdate = "UPDATE usuarios set cargo_user = ? where login = ?"; 
 
         // Comando para fazer o update 
         PreparedStatement stmtUpdate; 
@@ -613,7 +641,7 @@ public class funcoes {
             newName = input.nextLine(); 
         
         // Coloca na variavel o codigo para fazer o update no banco de dados
-        String sqlUpdate = "UPDATE usuario set nome = ? where login = ?"; 
+        String sqlUpdate = "UPDATE usuarios set nome = ? where login = ?"; 
 
         // Comando para fazer o update 
         PreparedStatement stmtUpdate; 
@@ -649,7 +677,7 @@ public class funcoes {
             newSenha = input.nextLine(); 
         
         // Coloca na variavel o codigo para fazer o update no banco de dados
-        String sqlUpdate = "UPDATE usuario set senha = ? where login = ?"; 
+        String sqlUpdate = "UPDATE usuarios set senha = ? where login = ?"; 
 
         // Comando para fazer o update 
         PreparedStatement stmtUpdate; 
@@ -677,8 +705,28 @@ public class funcoes {
 
 
 
-}
+    }
 
+    public int optCargo(String Cargo){
+    
+        String cargo = Cargo; 
+        int cargoNum;
+
+        if (cargo.equalsIgnoreCase("AuxAlmoxarife")) {
+            return cargoNum = 1; 
+        }
+        if (cargo.equalsIgnoreCase("Almoxarife")) {
+            return cargoNum = 2; 
+        }
+        if (cargo.equalsIgnoreCase("Farmacêutico")) {
+            return cargoNum = 3; 
+        }
+        if (cargo.equalsIgnoreCase("Admin")) {
+            return cargoNum = 4; 
+        }
+        return 0;
+    }
+}
     
    
    
