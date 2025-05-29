@@ -62,17 +62,17 @@ public class funcoes {
         
         System.out.println("Digite o nome do produto: ");
             nome = input.nextLine(); 
-        System.out.println("**********************************************************************");
+        System.out.println("----------------------------------------------------------------------");
         
         System.out.println("Digite sua unidade de medida: ");
             und = input.next(); 
             
-    do{ System.out.println("**********************************************************************");
+    do{ System.out.println("----------------------------------------------------------------------");
         System.out.println("Esse Produto é um medicamento da Portaria 344/98? [sim/nao]");
             controleEspecial = input.next();
         
         if (!controleEspecial.equalsIgnoreCase("sim") && !controleEspecial.equalsIgnoreCase("nao")){
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
             System.out.println("Valor inválido ! Selecione um valor [sim/nao]");
         }
         
@@ -135,7 +135,7 @@ public class funcoes {
         // Conectar com banco de dados 
         
         System.out.println("Qual produto você deseja inventariar ?");
-        System.out.println("**********************************************************************");
+        System.out.println("----------------------------------------------------------------------");
         
         // verifica se existe o produto no banco de dados e coloca as informações do produto em "Resultado"
         ResultSet resultado = verificaDB();
@@ -152,9 +152,9 @@ public class funcoes {
 
                 System.out.println("Quantidade atual de: "+ name +" é de " + quantidadeAtual);
                 System.out.println("ALERTA ! Você irá substituir a quantidade atual do produto em estoque");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println("Qual a quantidade real de " + name + " existe no estoque fisico ?");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                     newQtde = input.nextInt(); 
                 System.out.println("**********************************************************************");
                 System.out.println("Qual seu lote?");
@@ -413,6 +413,8 @@ public class funcoes {
          
     }
     
+    
+    
     // Definir a senha para o valor padrão 0000 
     public void resetPassword(String Login){
         
@@ -607,7 +609,7 @@ public class funcoes {
         String login,newName;
         login = Login; 
         
-        System.out.print("Digite o novo Cargo: ");
+        System.out.print("Digite o Nome do usuário: ");
             newName = input.nextLine(); 
         
         // Coloca na variavel o codigo para fazer o update no banco de dados
@@ -637,7 +639,45 @@ public class funcoes {
             Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
-    }
+    
+    public void alterSenha (String Login){
+        
+        String login,newSenha;
+        login = Login; 
+        
+        System.out.print("Digite a nova Senha: ");
+            newSenha = input.nextLine(); 
+        
+        // Coloca na variavel o codigo para fazer o update no banco de dados
+        String sqlUpdate = "UPDATE usuario set senha = ? where login = ?"; 
+
+        // Comando para fazer o update 
+        PreparedStatement stmtUpdate; 
+        try {
+            stmtUpdate = conn.prepareStatement(sqlUpdate);
+
+        // Substitui na String sqlUpdate os valores com interrogação 
+        stmtUpdate.setString(1, newSenha);
+        stmtUpdate.setString(2, login);
+
+        // Pega quantas linhas foram afetadas 
+        int linhasAfetadas = stmtUpdate.executeUpdate();
+
+        // Se existir linhas afetadas 
+        if (linhasAfetadas > 0) {
+            System.out.println("Sua senha foi atualizada com sucesso!");
+        } 
+
+        else {
+            System.out.println("Erro ao atualizar sua senha."); 
+        }
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+}
 
     
    
