@@ -1,6 +1,7 @@
 
 package sygerenciamentoestoquea3;
-import java.sql.ResultSet;
+
+import java.sql.*;
 import java.util.Scanner;
 /**
  *
@@ -19,16 +20,16 @@ public class cargo {
         do {
             System.out.println("1 - Realizar baixa");
             System.out.println("2 - Listar Produtos");
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
                 options = input.nextInt(); 
             
             if (options > 2 || options < 1){
                 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println("Opção inválida, por favor escolha uma opção de 1 a 2");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println("O que Você gostaria de fazer ?");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
             }
             
         } while (options > 2 || options < 1);
@@ -41,9 +42,9 @@ public class cargo {
             break; 
                 
             case 2: 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println(" - Posição de estoque Simplificado - ");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                     funct.consultarProd();
             
                     // Continuar ou finalizar programa
@@ -51,7 +52,7 @@ public class cargo {
                     moreOrClose(); 
                     
                     if (moreOrclose == 1){
-                        System.out.println("**********************************************************************");
+                        System.out.println("----------------------------------------------------------------------");
                         System.out.println("O que você gostaria de fazer ?");
                             auxAlmoxarife(); 
                     }
@@ -68,7 +69,7 @@ public class cargo {
             System.out.println("3 - Inventario de Produtos "); // ok 
             System.out.println("4 - Entrar com notas ficais"); // ok 
             System.out.println("5 - Relatórios"); 
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
                 options = input.nextInt(); 
 
             if (options < 0 || options > 5)
@@ -85,20 +86,20 @@ public class cargo {
             case 2: 
             // Metodo de Criar Produtos
                 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println(" - Criar Produtos - ");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 
                 funct.CreateProd();
                 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println("Deseja Visualizar todos os produtos ?");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println("1 - sim");
                 System.out.println("2 - não");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                     options = input.nextInt();
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 
                 if (options == 1){
                     funct.consultarProd();
@@ -108,39 +109,39 @@ public class cargo {
                                 
                 if (moreOrclose == 1){
                     System.out.println("O que você gostaria de fazer agora ?");
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                     almoxarife();
                 }
             break;
     
             case 3: 
             // Metodo de Invetariar produtos 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println(" - Inventario - ");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 
                 funct.invProd();
                 moreOrClose();
                 
                 if (moreOrclose == 1){
                     System.out.println("O que você gostaria de fazer agora ?");
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                     almoxarife();
                 }
             break;
     
             case 4: 
             // Metodo de Entrar com notas Ficais 
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 System.out.println(" - Entrar com Nota Fiscal - ");
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 funct.notaFiscal(); 
                 
                 moreOrClose();
                 
                 if (moreOrclose == 1){
                     System.out.println("O que você gostaria de fazer agora ?");
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                     almoxarife();
                 }
                 break;
@@ -148,17 +149,17 @@ public class cargo {
             case 5: 
             // Tirar Relatório 
                 do{ System.out.println("Qual relatório você gostaria de visualizar: ");
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                     System.out.println("1 - Posição de Estoque");
                     System.out.println("2 - Consumo");
                     System.out.println("3 - Lista de compras Mensal");
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                         options = input.nextInt();
 
                     if (options < 1 || options > 3){
-                        System.out.println("**********************************************************************");
+                        System.out.println("----------------------------------------------------------------------");
                         System.out.println("Código inválido, por gentileza selecione uma opção de 1 a 3 !");
-                        System.out.println("**********************************************************************");
+                        System.out.println("----------------------------------------------------------------------");
                     }
                     
                 } while (options < 1 || options > 3);
@@ -190,12 +191,8 @@ public class cargo {
         String login,senha,name_user,cargo_user;
         
         senha = "0000";  
-        cargo_user = null; 
+        cargo_user = null;
         
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("ADMINISTRADOR - T.I");
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("O que você deseja fazer hoje ?");
         System.out.println("  ");
         do{ System.out.println("1 - Criar usuário");
             System.out.println("2 - Alterar Senha");
