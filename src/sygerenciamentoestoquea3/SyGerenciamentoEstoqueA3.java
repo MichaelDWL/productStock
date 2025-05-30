@@ -64,11 +64,11 @@ public class SyGerenciamentoEstoqueA3 {
             System.out.println(" ");
             System.out.println("O que você gostaria de fazer hoje? ");
             
-            // Vai pegar o cargo e retornar um numero int
+           // Vai pegar o cargo e retornar um numero int
             int optCargo = funct.optCargo(cargoMain);
 
            
-            //MENU seleção de cargo 
+           //MENU seleção de cargo 
            
             switch (optCargo){
 
