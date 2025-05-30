@@ -1,6 +1,10 @@
 
 package sygerenciamentoestoquea3;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.*; 
 import java.time.LocalDate;
@@ -377,6 +381,85 @@ public class funcoes {
         
     }
     
+    // Relatórios 
+    
+    public void pos_estoque(){
+        
+        StringBuilder dados = new StringBuilder();
+        
+        try{
+    
+            // Criar o objeto Statement para enviar comandos SQL
+            Statement stmt = conn.createStatement();
+
+            // SQL de consulta
+            String sql = "SELECT * FROM produtos";
+
+            // Executar o SELECT
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Percorrer os resultados
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String nome = rs.getString("nome");
+                double Vr = rs.getDouble("Vr");
+                int qtde = rs.getInt("qtde");
+                
+                String linha = id + "," + nome + "," + Vr + "," + qtde; // armazena os dados nessa variavel 
+                
+                dados.append(linha).append("\n"); //Coloca na variavel "dados" a String da variavel linha 
+                
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println(" / ID: " + id + " / Nome: " + nome + " / Valor: " + Vr + " / Quantidade: " + qtde + " / ");
+                System.out.println("----------------------------------------------------------------------");
+            }   
+            
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar: " + e.getMessage());
+        }
+        
+        System.out.print("Deseja salvar o relatório em CSV? (s/n): ");
+            String opt = input.next();
+            input.nextLine(); // tira a linha em branco que buga 
+
+        if (opt.equalsIgnoreCase("s")) {
+            System.out.print("Digite o nome do arquivo: ");
+            String name_relat = input.nextLine();
+
+            // Caminho fixo
+            String pasta = "C:/Users/maiqu/OneDrive/Área de Trabalho/relatorios";
+
+            // Cria a pasta se não existir
+            File dir = new File(pasta);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            // Garante separador no final do caminho (bug que nao salva arquivo)
+            if (!pasta.endsWith("/") && !pasta.endsWith("\\")) {
+                pasta += "/";
+            }
+
+            // Monta o caminho completo
+            String caminhoCompleto = pasta + name_relat;
+            if (!caminhoCompleto.toLowerCase().endsWith(".csv")) {
+                caminhoCompleto += ".csv";
+            }
+
+            salvarCSV(dados.toString(), caminhoCompleto);
+        }
+
+    }
+    
+    
+    public void salvarCSV(String conteudo, String caminhoCompleto) {
+    try (FileWriter writer = new FileWriter(caminhoCompleto)) {
+        writer.write(conteudo);
+        System.out.println("Relatório salvo em: " + caminhoCompleto);
+    } catch (IOException e) {
+        System.out.println("Erro ao salvar o arquivo: " + e.getMessage());
+    }
+}
     
     
     
@@ -726,12 +809,14 @@ public class funcoes {
         }
         return 0;
     }
-}
+
     
    
-   
+
+
+
     
-        
+}    
 
     
     
