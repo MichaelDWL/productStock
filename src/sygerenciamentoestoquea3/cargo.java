@@ -71,7 +71,7 @@ public class cargo {
             System.out.println("5 - Relatórios"); 
             System.out.println("----------------------------------------------------------------------");
                 options = input.nextInt(); 
-
+            System.out.println("----------------------------------------------------------------------");    
             if (options < 0 || options > 5)
                 System.out.println("Opção inválida, por favor escolha uma opção de 1 a 5");
 
@@ -142,7 +142,7 @@ public class cargo {
                 if (moreOrclose == 1){
                     System.out.println("O que você gostaria de fazer agora ?");
                     System.out.println("----------------------------------------------------------------------");
-                    almoxarife();
+                        almoxarife();
                 }
                 break;
             
@@ -155,7 +155,7 @@ public class cargo {
                     System.out.println("3 - Lista de compras Mensal");
                     System.out.println("----------------------------------------------------------------------");
                         options = input.nextInt();
-
+                        input.nextLine(); // limpa no numero 
                     if (options < 1 || options > 3){
                         System.out.println("----------------------------------------------------------------------");
                         System.out.println("Código inválido, por gentileza selecione uma opção de 1 a 3 !");
@@ -167,15 +167,39 @@ public class cargo {
                 switch (options) {
                     case 1 : 
                         // Metodo do Relatorio da posição de estoque
-                        funct.consultarProd();
+                        funct.pos_estoque();
+                        
+                        moreOrClose(); 
+                    
+                        if (moreOrclose == 1){
+                            System.out.println("----------------------------------------------------------------------");
+                            System.out.println("O que você gostaria de fazer ?");
+                                almoxarife(); 
+                        }
+                        
                     break; 
                         
                     case 2 : 
                         // Metodo do Relatório de consumo 
+                        moreOrClose(); 
+                    
+                        if (moreOrclose == 1){
+                            System.out.println("----------------------------------------------------------------------");
+                            System.out.println("O que você gostaria de fazer ?");
+                                almoxarife();
+                        }
                     break;
                     
                     case 3: 
                         // Metodo do Relátorio de Lista de compras mensal
+                        
+                        moreOrClose(); 
+                    
+                        if (moreOrclose == 1){
+                            System.out.println("----------------------------------------------------------------------");
+                            System.out.println("O que você gostaria de fazer ?");
+                                almoxarife();
+                        }
                     break;     
                 }
             break; 
@@ -260,6 +284,14 @@ public class cargo {
                 funct.createUser(name_user, login, senha, cargo_user);
                 System.out.println("Senha padrão definida como: 0000");
                 System.out.println("----------------------------------------------------------------------");
+            
+                moreOrClose(); 
+                    
+                if (moreOrclose == 1){
+                    System.out.println("----------------------------------------------------------------------");
+                    System.out.println("O que você gostaria de fazer ?");
+                        admin(); 
+                }
             break;
             
                 // Redefinir senha 
@@ -267,6 +299,14 @@ public class cargo {
                 System.out.print("Digite o login do usuário: ");
                     login = input.next(); 
                 funct.resetPassword(login);
+                
+                moreOrClose(); 
+                
+                if (moreOrclose == 1){
+                    System.out.println("----------------------------------------------------------------------");
+                    System.out.println("O que você gostaria de fazer ?");
+                        admin(); 
+                }
             break;
                 
             case 3:
@@ -306,6 +346,7 @@ public class cargo {
                         
                         // Fechar ou continuar 
                         moreOrClose(); 
+                        
                         if (moreOrclose == 1){
                             System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
@@ -316,20 +357,24 @@ public class cargo {
                         funct.alterLogin(login);
                         
                         // Fechar ou continuar 
+                        moreOrClose(); 
+                
                         if (moreOrclose == 1){
-                            System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
-                            admin();
+                            System.out.println("O que você gostaria de fazer ?");
+                                admin(); 
                         }
                     break;
                     case 3:
                         funct.alterCargo(login);
                         
                         // Fechar ou continuar 
+                        moreOrClose(); 
+                
                         if (moreOrclose == 1){
-                            System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
-                            admin();
+                            System.out.println("O que você gostaria de fazer ?");
+                                admin(); 
                         }
                     break;
                 } 
