@@ -63,6 +63,7 @@ public class SyGerenciamentoEstoqueA3 {
             System.out.println("Olá " + nomeCurto+",");
             System.out.println(" ");
             System.out.println("O que você gostaria de fazer hoje? ");
+            System.out.println(" ");
             
            // Vai pegar o cargo e retornar um numero int
             int optCargo = funct.optCargo(cargoMain);
