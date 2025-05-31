@@ -39,7 +39,6 @@ public class cargo {
             case 1:
                 
                 System.out.println("----------------------------------------------------------------------");
-                System.out.println("----------------------------------------------------------------------");
                 System.out.println(" - BAIXA DE PRODUTOS - ");
                 System.out.println("----------------------------------------------------------------------");
                 System.out.println("----------------------------------------------------------------------");
@@ -77,13 +76,12 @@ public class cargo {
     
     public void almoxarife(){
         
-    
         do {
-            System.out.println("1 - Realizar baixa");
+            System.out.println("1 - Realizar baixa"); // ok 
             System.out.println("2 - Criar Produto"); // ok 
             System.out.println("3 - Inventario de Produtos "); // ok 
             System.out.println("4 - Entrar com notas ficais"); // ok 
-            System.out.println("5 - Relatórios"); 
+            System.out.println("5 - Relatórios"); // semi-estruturado 
             System.out.println("----------------------------------------------------------------------");
                 options = input.nextInt(); 
             System.out.println("----------------------------------------------------------------------");    
