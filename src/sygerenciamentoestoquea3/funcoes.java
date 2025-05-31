@@ -1,7 +1,6 @@
 
 package sygerenciamentoestoquea3;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -383,6 +382,7 @@ public class funcoes {
     
     // Relatórios 
     
+    // Relátorio de Posição de estoque 
     public void pos_estoque(){
         
         StringBuilder dados = new StringBuilder();
@@ -451,8 +451,9 @@ public class funcoes {
 
     }
     
-    
+    // Salvar relatório em CSV
     public void salvarCSV(String conteudo, String caminhoCompleto) {
+        
     try (FileWriter writer = new FileWriter(caminhoCompleto)) {
         writer.write(conteudo);
         System.out.println("Relatório salvo em: " + caminhoCompleto);
@@ -464,7 +465,6 @@ public class funcoes {
     
     
     // CONTROLE DO ADMIN
-    
     
     
     
