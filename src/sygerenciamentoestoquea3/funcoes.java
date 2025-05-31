@@ -102,29 +102,151 @@ public class funcoes {
     
     // Baixa de Produtos 
     public void baixaDprod() {
-        int options; 
         
-        System.out.println("Você gostaria de: ");
-        System.out.println("1- Dar baixa de produtos para paciente");
-        System.out.println("2- Dar baixa de produtos para setor");
-            options = input.nextInt(); 
+        int qtdeDB = 0; 
+        String nome, nome_prod = null, undMedida = null;
+        int qtdeBaixa, cons;
+        ResultSet rs; 
         
-        switch (options) {
+        System.out.println("Você deseja dar baixa para: ");
+        System.out.println(" ");
+        System.out.println("1 - Paciente ");
+        System.out.println("2 - Setor ");
+        System.out.println(" ");
+        System.out.println("----------------------------------------------------------------------");
+        int escolha = input.nextInt();
+        input.nextLine(); // Limpar o buffer
+
+        switch (escolha) {
             
-            case 1: 
-                // metodo baixa de paciente 
-            break; 
-                
-            case 2:
-                // metodo de baixa por setor 
+            //BAIXA P/ PACIENTE
+            case 1:
+                System.out.print("Digite o nome do paciente: ");
+                nome = input.nextLine();
+
+                rs = verificaDB();
+
+                try {
+
+                    if (rs.next()){
+                        qtdeDB = rs.getInt("qtde");
+                        nome_prod = rs.getString("nome"); 
+                        cons = rs.getInt("consumo");
+                        undMedida = rs.getString("unidade");
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                System.out.println("Quantidade disponível: " + qtdeDB);
+
+                if (qtdeDB == 0) {
+                    System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
+                }
+                else{
+                    System.out.print("Qual a quantidade que você deseja dar baixa ? : ");
+
+                    qtdeBaixa = input.nextInt();
+
+                    if (qtdeBaixa > qtdeDB) {
+                        System.out.println("Erro: quantidade digitada maior que a disponível.");
+                    } 
+                    else {
+                        qtdeDB -= qtdeBaixa;
+                        
+                        alterarQtde(codProd, qtdeDB);
+
+                        System.out.println("Baixa feita para paciente " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
+                        System.out.println("Nova quantidade no estoque: " + qtdeDB);
+                    }
+                }    
             break;
+            
+            // BAIXA P/ SETOR 
+            case 2 :
                 
+                System.out.print("Digite o Setor de destino: ");
+                nome = input.nextLine();
+
+                rs = verificaDB();
+
+                try {
+
+                    if (rs.next()){
+                        qtdeDB = rs.getInt("qtde");
+                        nome_prod = rs.getString("nome"); 
+                        cons = rs.getInt("consumo");
+                        undMedida = rs.getString("unidade");
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                System.out.println("Quantidade disponível: " + qtdeDB);
+
+                if (qtdeDB == 0) {
+                    System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
+                }
+                else{
+                    System.out.print("Você deseja dar baixa em quantas unidades ? : ");
+
+                    qtdeBaixa = input.nextInt();
+
+                    if (qtdeBaixa > qtdeDB) {
+                        System.out.println("Erro: quantidade digitada maior que a disponível.");
+                    } 
+                    else {
+                        qtdeDB -= qtdeBaixa;
+                        
+                        alterarQtde(codProd, qtdeDB);
+
+                        System.out.println("Baixa feita para setor: " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
+                        System.out.println("Nova quantidade no estoque: " + qtdeDB);
+                    }
+                }
+            break;
+
+            default:
+                System.out.println("Opção inválida.");        
+        } 
+    }    
+    
+    // Altera a quantidade no banco de dados 
+    public void alterarQtde (int codPRod,int qtdeDB){
+                int numProd = codProd; 
+                int qtde = qtdeDB; 
+                
+                // Coloca na variavel o codigo para fazer o update no banco de dados
+                String sqlUpdate = "UPDATE produtos set qtde = ? where ID = ?"; 
+
+        try {
+                // Comando para Criar a variavel
+                PreparedStatement stmtUpdate; 
+                stmtUpdate = conn.prepareStatement(sqlUpdate);
+        
+
+                // Substitui na String sqlUpdate os valores com interrogação 
+                stmtUpdate.setInt(1, qtde);
+                stmtUpdate.setInt(2, numProd);
+                
+                // Pega quantas linhas foram afetadas 
+                int linhasAfetadas = stmtUpdate.executeUpdate(); 
+
+                if (linhasAfetadas < 1) {
+                    System.out.println("Erro ao atualizar os dados.");
+                    System.out.println("----------------------------------------------------------------------");
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
         }
+                
         
         
     }
     
-    // Invetariar produto 
+    // Invetariar produto     
     public void invProd() { 
         
         int quantidadeAtual,newQtde;
@@ -380,7 +502,11 @@ public class funcoes {
         
     }
     
+    
+    
     // Relatórios 
+    
+    
     
     // Relátorio de Posição de estoque 
     public void pos_estoque(){
