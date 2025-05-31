@@ -37,8 +37,22 @@ public class cargo {
         switch(options){
             
             case 1:
-                // Metodo de realizar baixa    
-                System.out.println("Baixar produtos");
+                
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println(" - BAIXA DE PRODUTOS - ");
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------");
+                funct.baixaDprod();
+                
+                moreOrClose();
+                
+                if (moreOrclose == 1){
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("O que você gostaria de fazer ?");
+                            auxAlmoxarife(); 
+                    }
+                
             break; 
                 
             case 2: 
@@ -46,6 +60,7 @@ public class cargo {
                 System.out.println(" - Posição de estoque Simplificado - ");
                 System.out.println("----------------------------------------------------------------------");
                     funct.consultarProd();
+                    System.out.println(" ");
             
                     // Continuar ou finalizar programa
                     
@@ -81,6 +96,22 @@ public class cargo {
 
             case 1: 
             // Metodo de realizar baixa       
+            
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println(" - BAIXA DE PRODUTOS - ");
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------");
+                funct.baixaDprod();
+                System.out.println(" ");
+                
+                moreOrClose();
+                
+                if (moreOrclose == 1){
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("O que você gostaria de fazer ?");
+                            almoxarife(); 
+                    }
             break;  
             
             case 2: 
