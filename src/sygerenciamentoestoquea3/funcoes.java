@@ -54,6 +54,33 @@ public class funcoes {
           }
     }   
     
+    public void addCons(int codProd, int consumo){
+        
+        int cod = codProd;
+        int cons = consumo;
+        
+        String sql = " UPDATE produtos set consumo = ? WHERE ID = ? ";
+        PreparedStatement stmtUpdate; 
+        try {
+            stmtUpdate = conn.prepareStatement(sql);
+        
+        // Substitui na String sqlUpdate os valores com interrogação 
+        stmtUpdate.setInt(1, cons);
+        stmtUpdate.setInt(2, cod);
+        
+        // Pega quantas linhas foram afetadas 
+        int linhasAfetadas = stmtUpdate.executeUpdate();
+
+        // Se existir linhas afetadas 
+        if (linhasAfetadas < 1) {
+            System.out.println("Erro ao efetivar o consumo"); 
+        }
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+            
     // Criar produtos 
     public void CreateProd() {
 
@@ -105,7 +132,7 @@ public class funcoes {
         
         int qtdeDB = 0; 
         String nome, nome_prod = null, undMedida = null;
-        int qtdeBaixa, cons;
+        int qtdeBaixa, cons = 0;
         ResultSet rs; 
         
         System.out.println("Você deseja dar baixa para: ");
@@ -116,6 +143,7 @@ public class funcoes {
         System.out.println("----------------------------------------------------------------------");
         int escolha = input.nextInt();
         input.nextLine(); // Limpar o buffer
+        System.out.println("----------------------------------------------------------------------");
 
         switch (escolha) {
             
@@ -154,9 +182,11 @@ public class funcoes {
                     } 
                     else {
                         qtdeDB -= qtdeBaixa;
-                        
                         alterarQtde(codProd, qtdeDB);
-
+                        
+                        cons += qtdeBaixa;
+                        addCons(codProd, cons);
+                        
                         System.out.println("Baixa feita para paciente " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
                         System.out.println("Nova quantidade no estoque: " + qtdeDB);
                     }
@@ -199,9 +229,11 @@ public class funcoes {
                     } 
                     else {
                         qtdeDB -= qtdeBaixa;
-                        
                         alterarQtde(codProd, qtdeDB);
-
+                        
+                        cons += qtdeBaixa;
+                        addCons(codProd, cons);
+    
                         System.out.println("Baixa feita para setor: " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
                         System.out.println("Nova quantidade no estoque: " + qtdeDB);
                     }
