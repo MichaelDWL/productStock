@@ -50,7 +50,8 @@ public class conexaodb {
                 + "Dtvalidade VARCHAR(10),"
                 + "qtde INT(11),"
                 + "Vr DECIMAL(10,2),"
-                + "controlados ENUM('sim', 'nao')"
+                + "controlados ENUM('sim', 'nao'),"
+                + "consumo int default 0"
                 + ")";
 
         // Tabela usuarios
