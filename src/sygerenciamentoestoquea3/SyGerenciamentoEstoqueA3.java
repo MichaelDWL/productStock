@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  *
- * @author maiqu
+ * @author MichaelDWL
  */
 
 public class SyGerenciamentoEstoqueA3 {
@@ -27,8 +27,12 @@ public class SyGerenciamentoEstoqueA3 {
         String loginMain, senhaMain, nomeCurto, cargoMain = null;        
         int cargo, options; 
         
-        
     System.out.println("----------------------------------------------------------------------");
+    System.out.println(" ");
+    System.out.println("-------------------------------+ LOGIN +------------------------------");
+    System.out.println(" ");
+    System.out.println("----------------------------------------------------------------------");                   
+
     System.out.println(" ");
     System.out.println("Olá, Seja bem vindo !");
     System.out.println(" ");
@@ -102,19 +106,7 @@ public class SyGerenciamentoEstoqueA3 {
         System.out.println(" ");    
         System.out.println(" ");    
         System.out.println("Até a proxima, tenha um bom trabalho !");
-
-
-
-    
-
-
-
-
-
-
-
-
-
+        
     }
     
 }
