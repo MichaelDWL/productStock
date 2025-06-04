@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author maiqu
+ * @author MichaelDWL
  */
 
 public class funcoes {    
     
     Scanner input = new Scanner(System.in);    
     Connection conn = conexaodb.conectar();
-    boolean busca = true; 
+    boolean buscar = true; 
     int codProd; 
     
     // Consultar lista de produtos 
@@ -61,21 +61,21 @@ public class funcoes {
         
         String sql = " UPDATE produtos set consumo = ? WHERE ID = ? ";
         PreparedStatement stmtUpdate; 
-        try {
+        
+        try{
             stmtUpdate = conn.prepareStatement(sql);
-        
-        // Substitui na String sqlUpdate os valores com interrogação 
-        stmtUpdate.setInt(1, cons);
-        stmtUpdate.setInt(2, cod);
-        
-        // Pega quantas linhas foram afetadas 
-        int linhasAfetadas = stmtUpdate.executeUpdate();
 
-        // Se existir linhas afetadas 
-        if (linhasAfetadas < 1) {
-            System.out.println("Erro ao efetivar o consumo"); 
-        }
-        
+            // Substitui na String sqlUpdate os valores com interrogação 
+            stmtUpdate.setInt(1, cons);
+            stmtUpdate.setInt(2, cod);
+
+            // Pega quantas linhas foram afetadas 
+            int linhasAfetadas = stmtUpdate.executeUpdate();
+
+            // Se existir linhas afetadas 
+            if (linhasAfetadas < 1) {
+                System.out.println("Erro ao efetivar o consumo"); 
+            }
         } catch (SQLException ex) {
             Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,47 +84,45 @@ public class funcoes {
     // Criar produtos 
     public void CreateProd() {
 
-        String nome, und, controleEspecial;
-        
-        System.out.println("Digite o nome do produto: ");
-            nome = input.nextLine(); 
-        System.out.println("----------------------------------------------------------------------");
-        
-        System.out.println("Digite sua unidade de medida: ");
-            und = input.next(); 
-            
-    do{ System.out.println("----------------------------------------------------------------------");
-        System.out.println("Esse Produto é um medicamento da Portaria 344/98? [sim/nao]");
-            controleEspecial = input.next();
-        
-        if (!controleEspecial.equalsIgnoreCase("sim") && !controleEspecial.equalsIgnoreCase("nao")){
+            String nome, und, controleEspecial;
+
+            System.out.println("Digite o nome do produto: ");
+                nome = input.nextLine(); 
             System.out.println("----------------------------------------------------------------------");
-            System.out.println("Valor inválido ! Selecione um valor [sim/nao]");
-        }
-        
-        } while (!controleEspecial.equalsIgnoreCase("sim") && !controleEspecial.equalsIgnoreCase("nao"));
-            
-            try {
-            // SQL de inserção com parâmetros
-            String sql = "INSERT INTO produtos (nome, unidade, controlados) VALUES (?, ?, ?)";
 
-            // Usar PreparedStatement para segurança (evita SQL Injection)
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, nome);
-            stmt.setString(2, und);
-            stmt.setString(3, controleEspecial);
-            //stmt.setInt(3, 10);
-            
-            // Executa e Retorna o resultado 
-            int linhasAfetadas = stmt.executeUpdate();
+            System.out.println("Digite sua unidade de medida: ");
+                und = input.next(); 
 
-            if (linhasAfetadas > 0) {
-                System.out.println("Produto Criado com sucesso!");
+        do{ System.out.println("----------------------------------------------------------------------");
+            System.out.println("Esse Produto é um medicamento da Portaria 344/98? [sim/nao]");
+                controleEspecial = input.next();
+
+            if (!controleEspecial.equalsIgnoreCase("sim") && !controleEspecial.equalsIgnoreCase("nao")){
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("Valor inválido ! Selecione um valor [sim/nao]");
             }
+        } while (!controleEspecial.equalsIgnoreCase("sim") && !controleEspecial.equalsIgnoreCase("nao"));
 
-        } catch (Exception e) {
-            System.out.println("Erro ao Criar: " + e.getMessage());
-        }
+            try{
+                // SQL de inserção com parâmetros
+                String sql = "INSERT INTO produtos (nome, unidade, controlados) VALUES (?, ?, ?)";
+
+                // Usar PreparedStatement para segurança (evita SQL Injection)
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.setString(1, nome);
+                stmt.setString(2, und);
+                stmt.setString(3, controleEspecial);
+                //stmt.setInt(3, 10);
+
+                // Executa e Retorna o resultado 
+                int linhasAfetadas = stmt.executeUpdate();
+
+                if (linhasAfetadas > 0) {
+                    System.out.println("Produto Criado com sucesso!");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro ao Criar: " + e.getMessage());
+            }
     }
     
     // Baixa de Produtos 
@@ -132,117 +130,128 @@ public class funcoes {
         
         int qtdeDB = 0; 
         String nome, nome_prod = null, undMedida = null;
-        int qtdeBaixa, cons = 0;
+        int qtdeBaixa,escolha, cons = 0;
         ResultSet rs; 
+        buscar = true;
         
-        System.out.println("Você deseja dar baixa para: ");
-        System.out.println(" ");
-        System.out.println("1 - Paciente ");
-        System.out.println("2 - Setor ");
-        System.out.println(" ");
-        System.out.println("----------------------------------------------------------------------");
-        int escolha = input.nextInt();
-        input.nextLine(); // Limpar o buffer
-        System.out.println("----------------------------------------------------------------------");
+        do{ System.out.println("Você deseja dar baixa para: ");
+            System.out.println(" ");
+            System.out.println("1 - Paciente ");
+            System.out.println("2 - Setor ");
+            System.out.println(" ");
+            System.out.println("----------------------------------------------------------------------");
 
-        switch (escolha) {
-            
-            //BAIXA P/ PACIENTE
-            case 1:
-                System.out.print("Digite o nome do paciente: ");
-                nome = input.nextLine();
+            try{
+                escolha = input.nextInt();
+                input.nextLine(); // Limpar o buffer
+                System.out.println("----------------------------------------------------------------------");
 
-                rs = verificaDB();
+                switch (escolha) {
 
-                try {
+                    default: 
+                        System.out.println("opção inválida, por favor escolha uma opção de 1 a 2");
+                        System.out.println("----------------------------------------------------------------------");
+                        buscar = false; 
+                    break;
+                    //BAIXA P/ PACIENTE
+                    case 1:
+                        System.out.print("Digite o nome do paciente: ");
+                        nome = input.nextLine();
 
-                    if (rs.next()){
-                        qtdeDB = rs.getInt("qtde");
-                        nome_prod = rs.getString("nome"); 
-                        cons = rs.getInt("consumo");
-                        undMedida = rs.getString("unidade");
-                    }
+                        rs = verificaDB();
 
-                } catch (SQLException ex) {
-                    Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                        try {
+
+                            if (rs.next()){
+                                qtdeDB = rs.getInt("qtde");
+                                nome_prod = rs.getString("nome"); 
+                                cons = rs.getInt("consumo");
+                                undMedida = rs.getString("unidade");
+                            }
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        System.out.println("Quantidade disponível: " + qtdeDB);
+
+                        if (qtdeDB == 0) {
+                            System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
+                        }
+                        else{
+                            System.out.print("Qual a quantidade que você deseja dar baixa ? : ");
+
+                            qtdeBaixa = input.nextInt();
+
+                            if (qtdeBaixa > qtdeDB) {
+                                System.out.println("Erro: quantidade digitada maior que a disponível.");
+                            } 
+                            else {
+                                qtdeDB -= qtdeBaixa;
+                                alterarQtde(codProd, qtdeDB);
+
+                                cons += qtdeBaixa;
+                                addCons(codProd, cons);
+
+                                System.out.println("Baixa feita para paciente " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
+                                System.out.println("Nova quantidade no estoque: " + qtdeDB);
+                            }
+                        }    
+                    break;
+
+                    // BAIXA P/ SETOR 
+                    case 2 :
+
+                        System.out.print("Digite o Setor de destino: ");
+                        nome = input.nextLine();
+
+                        rs = verificaDB();
+
+                        try {
+
+                            if (rs.next()){
+                                qtdeDB = rs.getInt("qtde");
+                                nome_prod = rs.getString("nome"); 
+                                cons = rs.getInt("consumo");
+                                undMedida = rs.getString("unidade");
+                            }
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        System.out.println("Quantidade disponível: " + qtdeDB);
+
+                        if (qtdeDB == 0) {
+                            System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
+                        }
+                        else{
+                            System.out.print("Você deseja dar baixa em quantas unidades ? : ");
+
+                            qtdeBaixa = input.nextInt();
+
+                            if (qtdeBaixa > qtdeDB) {
+                                System.out.println("Erro: quantidade digitada maior que a disponível.");
+                            } 
+                            else {
+                                qtdeDB -= qtdeBaixa;
+                                alterarQtde(codProd, qtdeDB);
+
+                                cons += qtdeBaixa;
+                                addCons(codProd, cons);
+
+                                System.out.println("Baixa feita para setor: " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
+                                System.out.println("Nova quantidade no estoque: " + qtdeDB);
+                            }
+                        }
+                    break;
                 }
-
-                System.out.println("Quantidade disponível: " + qtdeDB);
-
-                if (qtdeDB == 0) {
-                    System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
-                }
-                else{
-                    System.out.print("Qual a quantidade que você deseja dar baixa ? : ");
-
-                    qtdeBaixa = input.nextInt();
-
-                    if (qtdeBaixa > qtdeDB) {
-                        System.out.println("Erro: quantidade digitada maior que a disponível.");
-                    } 
-                    else {
-                        qtdeDB -= qtdeBaixa;
-                        alterarQtde(codProd, qtdeDB);
-                        
-                        cons += qtdeBaixa;
-                        addCons(codProd, cons);
-                        
-                        System.out.println("Baixa feita para paciente " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
-                        System.out.println("Nova quantidade no estoque: " + qtdeDB);
-                    }
-                }    
-            break;
-            
-            // BAIXA P/ SETOR 
-            case 2 :
-                
-                System.out.print("Digite o Setor de destino: ");
-                nome = input.nextLine();
-
-                rs = verificaDB();
-
-                try {
-
-                    if (rs.next()){
-                        qtdeDB = rs.getInt("qtde");
-                        nome_prod = rs.getString("nome"); 
-                        cons = rs.getInt("consumo");
-                        undMedida = rs.getString("unidade");
-                    }
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                System.out.println("Quantidade disponível: " + qtdeDB);
-
-                if (qtdeDB == 0) {
-                    System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
-                }
-                else{
-                    System.out.print("Você deseja dar baixa em quantas unidades ? : ");
-
-                    qtdeBaixa = input.nextInt();
-
-                    if (qtdeBaixa > qtdeDB) {
-                        System.out.println("Erro: quantidade digitada maior que a disponível.");
-                    } 
-                    else {
-                        qtdeDB -= qtdeBaixa;
-                        alterarQtde(codProd, qtdeDB);
-                        
-                        cons += qtdeBaixa;
-                        addCons(codProd, cons);
-    
-                        System.out.println("Baixa feita para setor: " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
-                        System.out.println("Nova quantidade no estoque: " + qtdeDB);
-                    }
-                }
-            break;
-
-            default:
-                System.out.println("Opção inválida.");        
-        } 
+            } catch (InputMismatchException e) {
+                    System.out.println("Entrada inválida! Por favor, digite apenas números.");
+                    input.nextLine();
+                    buscar = false; // Limpa o buffer do scanner (remove o texto inválido)
+            }
+        } while(buscar == false);    
     }    
     
     // Altera a quantidade no banco de dados 
@@ -284,74 +293,76 @@ public class funcoes {
         int quantidadeAtual,newQtde;
         String newLote, newDt;
         String name; 
-        
+        buscar = true; 
         // Conectar com banco de dados 
         
-        System.out.println("Qual produto você deseja inventariar ?");
-        System.out.println("----------------------------------------------------------------------");
+        do{ System.out.println("Qual produto você deseja inventariar ?");
+            System.out.println("----------------------------------------------------------------------");
         
-        // verifica se existe o produto no banco de dados e coloca as informações do produto em "Resultado"
-        ResultSet resultado = verificaDB();
+            // verifica se existe o produto no banco de dados e coloca as informações do produto em "Resultado"
+            ResultSet resultado = verificaDB();
 
-        // Se tiver retornado algum resultado 
-        try { 
-            // ele vai ler os resultados
-            if (resultado.next()) {
+            // Se tiver retornado algum resultado 
+            try { 
+                // ele vai ler os resultados
+                if (resultado.next()) {
 
-            // Pega a quantidade e o nome do produto no banco 
-            
-                quantidadeAtual = resultado.getInt("qtde");
-                name = resultado.getString("nome");
+                    // Pega a quantidade e o nome do produto no banco 
+                    quantidadeAtual = resultado.getInt("qtde");
+                    name = resultado.getString("nome");
 
-                System.out.println("Quantidade atual de: "+ name +" é de " + quantidadeAtual);
-                System.out.println("ALERTA ! Você irá substituir a quantidade atual do produto em estoque");
-                System.out.println("----------------------------------------------------------------------");
-                System.out.println("Qual a quantidade real de " + name + " existe no estoque fisico ?");
-                System.out.println("----------------------------------------------------------------------");
-                    newQtde = input.nextInt(); 
-                System.out.println("----------------------------------------------------------------------");
-                System.out.println("Qual seu lote?");
-                System.out.println("----------------------------------------------------------------------");
-                    newLote = input.next(); 
-                System.out.println("----------------------------------------------------------------------");
-                    System.out.println("Qual a data de validade?  (dd/mm/aaaa)");
-                System.out.println("----------------------------------------------------------------------");
-                    newDt = input.next();                        
-                System.out.println("----------------------------------------------------------------------");
-
-                // Coloca na variavel o codigo para fazer o update no banco de dados
-                String sqlUpdate = "UPDATE produtos set qtde = ?, lote = ?, Dtvalidade = ? where ID = ?"; 
-
-                // Comando para fazer o update 
-                PreparedStatement stmtUpdate = conn.prepareStatement(sqlUpdate); 
-
-                // Substitui na String sqlUpdate os valores com interrogação 
-                stmtUpdate.setInt(1, newQtde);
-                stmtUpdate.setString(2, newLote);
-                stmtUpdate.setString(3, newDt);
-                stmtUpdate.setInt(4, codProd);
-
-                // Pega quantas linhas foram afetadas 
-                int linhasAfetadas = stmtUpdate.executeUpdate();
-
-                // Se existir linhas afetadas 
-                if (linhasAfetadas > 0) {
-                    System.out.println("Dados do produto atualizados com sucesso!");
-                    System.out.println("Novos dados para o produto: Qtde: " + newQtde + "/ lote: " + newLote + "/ Validade: " +newDt);
+                    System.out.println("Quantidade atual de: "+ name +" é de " + quantidadeAtual);
+                    System.out.println("ALERTA ! Você irá substituir a quantidade atual do produto em estoque");
                     System.out.println("----------------------------------------------------------------------");
-                } 
-
-                else {
-                    System.out.println("Erro ao atualizar os dados.");
+                    System.out.println("Qual a quantidade real de " + name + " existe no estoque fisico ?");
                     System.out.println("----------------------------------------------------------------------");
-                    busca = false; 
+                        newQtde = input.nextInt(); 
+                    System.out.println("----------------------------------------------------------------------");
+                    System.out.println("Qual seu lote?");
+                    System.out.println("----------------------------------------------------------------------");
+                        newLote = input.next(); 
+                    System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Qual a data de validade? (dd/mm/aaaa): ");
+                    System.out.println("----------------------------------------------------------------------");
+                        newDt = input.next();                        
+                    System.out.println("----------------------------------------------------------------------");
+
+                    // Coloca na variavel o codigo para fazer o update no banco de dados
+                    String sqlUpdate = "UPDATE produtos set qtde = ?, lote = ?, Dtvalidade = ? where ID = ?"; 
+
+                    // Comando para fazer o update 
+                    PreparedStatement stmtUpdate = conn.prepareStatement(sqlUpdate); 
+
+                    // Substitui na String sqlUpdate os valores com interrogação 
+                    stmtUpdate.setInt(1, newQtde);
+                    stmtUpdate.setString(2, newLote);
+                    stmtUpdate.setString(3, newDt);
+                    stmtUpdate.setInt(4, codProd);
+
+                    // Pega quantas linhas foram afetadas 
+                    int linhasAfetadas = stmtUpdate.executeUpdate();
+
+                    // Se existir linhas afetadas 
+                    if (linhasAfetadas > 0) {
+                        System.out.println("Dados do produto atualizados com sucesso!");
+                        System.out.println("Novos dados para o produto: Qtde: " + newQtde + "/ lote: " + newLote + "/ Validade: " +newDt);
+                        System.out.println("----------------------------------------------------------------------");
+                    } 
+
+                    else {
+                        System.out.println("Erro ao atualizar os dados.");
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Tente novamente");
+                        System.out.println("----------------------------------------------------------------------");
+                        buscar = false; 
+                    }    
                 }
-                
+
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.out.println("----------------------------------------------------------------------");
             }
-        } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("----------------------------------------------------------------------");
-              }
+        } while(buscar == false); 
     }    
     
     // Entrada de nota fiscal    
@@ -360,7 +371,7 @@ public class funcoes {
         int nFe, qtdeDB, qtdeNFE, qtdeSOMA,idNotaFiscal = -1;
         String dtEmit,name;
         Double vrTotal, vrUn;
-        busca = false; 
+        buscar = true; 
             
             // PARTE 1 - Informações da nota fiscal 
         do{ System.out.print("Digite o numero da Nota Fiscal: ");
@@ -377,7 +388,6 @@ public class funcoes {
 
             // PARTE 2 - Adiciona a nota fiscal no banco 
             try {
-                
                 // Criar uma nota fiscal no banco 
                 String sql_nfe = "insert into notas_fiscais (num_nfe, data_emissao, Vrtotal) value (?,?,?)";    
                 PreparedStatement stmt = conn.prepareStatement(sql_nfe,Statement.RETURN_GENERATED_KEYS);
@@ -397,18 +407,21 @@ public class funcoes {
                 }
                 if (idNotaFiscal == -1) {
                 System.out.println("Erro: ID da nota fiscal não foi gerado!");
+                buscar = false;
                 }
-                busca = true;
                 
             } catch (SQLException ex) {
                 System.out.println("Erro ao entrar com a nota");
                 Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("**********************************************************************");
-              }
+                buscar = false;
+            }
             
-        } while (busca == false);     
+        } while (buscar == false);     
         
-            // PARTE 3 - DADOS DO PRODUTO      
+        
+        // PARTE 3 - DADOS DO PRODUTO      
+        do{
         do{ System.out.println("**********************************************************************");
             System.out.println("Selecine o Produto que você deseja entrar");
 
@@ -421,11 +434,9 @@ public class funcoes {
                 vrUn = input.nextDouble(); 
             System.out.println("**********************************************************************");
 
-            // PARTE 3 - ADICIONAR QTDE NO BANCO 
+            // PARTE 3 - ADICIONAR QTDE NO BANCO  
             
-            busca = false; 
-            
-            try {   
+            try{   
                     if (resultado.next()){
                         name = resultado.getString("nome");
                         codProd = resultado.getInt("ID");
@@ -451,19 +462,27 @@ public class funcoes {
                         if (linhasAfetadas > 0) {
                             System.out.println("Nota Fiscal Entrada com sucesso");
                             System.out.println("Novos dados para " +name+": Qtde: " + qtdeSOMA + " Vr: "+vrUn);
-                            System.out.println("**********************************************************************");
-                            busca = true; 
+                            System.out.println("**********************************************************************"); 
                         } 
 
                         else {
                             System.out.println("Erro ao entrar com a nota Fiscal !");
                             System.out.println("**********************************************************************");
+                            System.out.println("Tente novamente");
+                            System.out.println("**********************************************************************");
+                            buscar = false;
                         }
                     
                     } else{
                         System.out.println("Nenhum resultado encontrado");
+                        buscar = false; 
                     }
-
+            } catch (SQLException ex) {
+                Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                buscar = false; 
+            }        
+        } while (buscar == false);           
+                try{
                     // PARTE 5 - Adiciona a nota e o produto na tabela comparativa 
                     String notaXprodsql = "insert into nota_prod (nota_id, prod_id, qtde_ent) value (?,?,?)"; 
 
@@ -478,15 +497,17 @@ public class funcoes {
                     stmt_nt_pr.executeUpdate();
                     
                 } catch (SQLException ex) {
-                Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        // Se ocorreu algum erro, recomece o processo  
-        } while (busca == false);           
+                    Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                    buscar = false; 
+                }
+        // Se ocorreu algum erro, recomece o processo 
+        } while (buscar == false);        
     }
     
     // verifica se o produto digitado existe no banco de dados 
     public ResultSet verificaDB (){
             ResultSet resultado = null; 
+            buscar = true; 
         
             consultarProd(); // imprime a lista de produtos com os códigos 
             System.out.println("**********************************************************************");
@@ -509,17 +530,14 @@ public class funcoes {
                 
                 // Verifica se existe algum resultado 
                 if (resultado.isBeforeFirst()) {
-                    
                     System.out.println("Código encontrado no banco de dados.");
-                    busca = true;
-                    
                 }
                 
                 else {
                     System.out.println("Código NÃO encontrado, selecione um produto cadastrado");
-                    busca = false;
                     System.out.println("Digite novamente o código do produto");
                     System.out.println("**********************************************************************");
+                    buscar = false;
                 }
             }  
             // se ocorrer algum erro, vai mostrar a pilha de execução do erro 
@@ -527,11 +545,9 @@ public class funcoes {
                 e.printStackTrace();
                 System.out.println("**********************************************************************");
             }
-   
-        } while(busca==false);
+        } while(buscar == false);
 
-      return resultado; 
-        
+      return resultado;
     }
     
     
@@ -540,7 +556,7 @@ public class funcoes {
     
     
     
-    // Relátorio de Posição de estoque 
+    // Relatório de Posição de estoque 
     public void pos_estoque(){
         
         StringBuilder dados = new StringBuilder();
@@ -609,6 +625,83 @@ public class funcoes {
 
     }
     
+    // Relatório de consumo
+    public void consProd(){
+        
+        buscar = true; 
+        StringBuilder dados = new StringBuilder();
+        
+        try{
+    
+            // Criar o objeto Statement para enviar comandos SQL
+            Statement stmt = conn.createStatement();
+
+            // SQL de consulta
+            String sql = "SELECT * FROM produtos";
+
+            // Executar o SELECT
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Percorrer os resultados
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String nome = rs.getString("nome");
+                int qtde = rs.getInt("qtde");
+                int cons = rs.getInt("consumo");
+                
+                String linha = id + "," + nome + "," + qtde + "," + cons; // armazena os dados nessa variavel 
+                
+                dados.append(linha).append("\n"); //Coloca na variavel "dados" a String da variavel linha 
+                
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println(" / ID: " + id + " / Nome: " + nome + " / Quantidade: " + qtde + " / Consumo: " + cons + " / ");
+                System.out.println("----------------------------------------------------------------------");
+            }   
+            
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar: " + e.getMessage());
+        }
+        
+        do{ System.out.print("Deseja salvar o relatório em CSV? (s/n): ");
+                String opt = input.next();
+                input.nextLine(); // tira a linha em branco que buga 
+                
+            if (opt.equalsIgnoreCase("s")) {
+                System.out.print("Digite o nome do arquivo: ");
+                String name_relat = input.nextLine();
+
+                // Caminho fixo
+                String pasta = "C:/Users/maiqu/OneDrive/Área de Trabalho/relatorios";
+
+                // Cria a pasta se não existir
+                File dir = new File(pasta);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                // Garante separador no final do caminho (bug que nao salva arquivo)
+                if (!pasta.endsWith("/") && !pasta.endsWith("\\")) {
+                    pasta += "/";
+                }
+
+                // Monta o caminho completo
+                String caminhoCompleto = pasta + name_relat;
+                if (!caminhoCompleto.toLowerCase().endsWith(".csv")) {
+                    caminhoCompleto += ".csv";
+                }
+
+                salvarCSV(dados.toString(), caminhoCompleto);
+            }
+            else if(opt.equalsIgnoreCase("n")) {
+                System.out.println("ok, prosseguindo...");
+            }
+            else {
+                System.out.println("Por favor, escolha uma opção válida");
+                buscar = false;
+            }
+        } while(buscar == false);    
+    }
+
     // Salvar relatório em CSV
     public void salvarCSV(String conteudo, String caminhoCompleto) {
         
@@ -694,12 +787,12 @@ public class funcoes {
     // Verifica login e senha do usuario 
     public ResultSet verificaAcesso (String Login, String Senha){
             
+            ResultSet resultado;    
             String login, senha;
             
             login = Login; 
             senha = Senha; 
             
-            ResultSet resultado;    
 
             try {
                 // Seleciona um usuario dentro da tabela usuario onde o login é igual a...
@@ -775,6 +868,7 @@ public class funcoes {
         return null;
     }
     
+    // Retorna nome e sobre nome do Usuário 
     public String nomeCurto(String login) {
         String nomeCurto = null;
 
@@ -798,7 +892,6 @@ public class funcoes {
 
         return nomeCurto;
     }
-
 
     // Altera os dados do usuário
     public void alterLogin (String Login){
@@ -947,7 +1040,8 @@ public class funcoes {
 
 
     }
-
+    
+    // Converte o cargo inserir no banco de dados de maneira padrão 
     public int optCargo(String Cargo){
     
         String cargo = Cargo; 
