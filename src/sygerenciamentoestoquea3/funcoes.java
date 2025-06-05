@@ -88,6 +88,7 @@ public class funcoes {
 
             System.out.println("Digite o nome do produto: ");
                 nome = input.nextLine(); 
+                
             System.out.println("----------------------------------------------------------------------");
 
             System.out.println("Digite sua unidade de medida: ");
@@ -95,6 +96,7 @@ public class funcoes {
 
         do{ System.out.println("----------------------------------------------------------------------");
             System.out.println("Esse Produto é um medicamento da Portaria 344/98? [sim/nao]");
+            System.out.println("----------------------------------------------------------------------");
                 controleEspecial = input.next();
 
             if (!controleEspecial.equalsIgnoreCase("sim") && !controleEspecial.equalsIgnoreCase("nao")){
@@ -134,7 +136,8 @@ public class funcoes {
         ResultSet rs; 
         buscar = true;
         
-        do{ System.out.println("Você deseja dar baixa para: ");
+        do{ System.out.println(" ");
+            System.out.println("Você deseja dar baixa para: ");
             System.out.println(" ");
             System.out.println("1 - Paciente ");
             System.out.println("2 - Setor ");
@@ -174,13 +177,14 @@ public class funcoes {
                         }
 
                         System.out.println("Quantidade disponível: " + qtdeDB);
-
+                        System.out.println(" ");
+                        
                         if (qtdeDB == 0) {
                             System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
                         }
                         else{
-                            System.out.print("Qual a quantidade que você deseja dar baixa ? : ");
-
+                            System.out.print("Você deseja dar baixa em quantas unidades? : ");
+                            System.out.println(" ");
                             qtdeBaixa = input.nextInt();
 
                             if (qtdeBaixa > qtdeDB) {
@@ -221,12 +225,14 @@ public class funcoes {
                         }
 
                         System.out.println("Quantidade disponível: " + qtdeDB);
+                        System.out.println(" ");
 
                         if (qtdeDB == 0) {
                             System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
                         }
                         else{
                             System.out.print("Você deseja dar baixa em quantas unidades ? : ");
+                            System.out.println(" ");
 
                             qtdeBaixa = input.nextInt();
 
@@ -315,15 +321,12 @@ public class funcoes {
                     System.out.println("ALERTA ! Você irá substituir a quantidade atual do produto em estoque");
                     System.out.println("----------------------------------------------------------------------");
                     System.out.println("Qual a quantidade real de " + name + " existe no estoque fisico ?");
-                    System.out.println("----------------------------------------------------------------------");
                         newQtde = input.nextInt(); 
                     System.out.println("----------------------------------------------------------------------");
-                    System.out.println("Qual seu lote?");
-                    System.out.println("----------------------------------------------------------------------");
+                    System.out.print("Qual seu lote? ");
                         newLote = input.next(); 
                     System.out.println("----------------------------------------------------------------------");
-                        System.out.println("Qual a data de validade? (dd/mm/aaaa): ");
-                    System.out.println("----------------------------------------------------------------------");
+                        System.out.print("Qual a data de validade? (dd/mm/aaaa): ");
                         newDt = input.next();                        
                     System.out.println("----------------------------------------------------------------------");
 
@@ -430,8 +433,16 @@ public class funcoes {
             System.out.println("----------------------------------------------------------------------");
             System.out.print("Digite a quantidade do produto: ");
                 qtdeNFE = input.nextInt(); 
+                input.nextLine(); //limpa o carctere vazio 
             System.out.print("Digite seu valor unitário: ");
-                vrUn = input.nextDouble(); 
+                String entrada = input.nextLine().trim();
+                entrada = entrada.replace(",", ".");
+                vrUn = Double.parseDouble(entrada);
+                 
+                
+                
+                
+                
             System.out.println("----------------------------------------------------------------------");
 
             // PARTE 3 - ADICIONAR QTDE NO BANCO  
@@ -595,11 +606,11 @@ public class funcoes {
         System.out.print("Deseja salvar o relatório em CSV? (s/n): ");
             String opt = input.next();
             input.nextLine(); // tira a linha em branco que buga 
-
+        System.out.println("----------------------------------------------------------------------");    
         if (opt.equalsIgnoreCase("s")) {
             System.out.print("Digite o nome do arquivo: ");
             String name_relat = input.nextLine();
-
+            System.out.println("----------------------------------------------------------------------");
             // Caminho fixo
             String pasta = "C:/Users/maiqu/OneDrive/Área de Trabalho/relatorios";
 
