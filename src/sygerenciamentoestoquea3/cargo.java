@@ -14,6 +14,7 @@ public class cargo {
     int options,moreOrclose;
     boolean buscar;
     
+    
     funcoes funct = new funcoes(); 
                
     public void auxAlmoxarife(){
@@ -22,54 +23,64 @@ public class cargo {
             System.out.println("1 - Realizar baixa");
             System.out.println("2 - Listar Produtos");
             System.out.println("----------------------------------------------------------------------");
+            try{    
                 options = input.nextInt(); 
               
-            switch(options){
-                default:
-                    System.out.println("----------------------------------------------------------------------");
-                    System.out.println("Opção inválida, por favor escolha uma opção de 1 a 2");
-                    System.out.println("----------------------------------------------------------------------");
-                    System.out.println("O que Você gostaria de fazer ?");
-                    System.out.println("----------------------------------------------------------------------");
-                    buscar = false; 
-                break;    
+                switch(options){
+                    default:
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Opção inválida, por favor escolha uma opção de 1 a 2");
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("O que Você gostaria de fazer ?");
+                        System.out.println("----------------------------------------------------------------------");
+                        buscar = false; 
+                    break;    
 
-                case 1:
+                    case 1:
 
-                    System.out.println("----------------------------------------------------------------------");
-                    System.out.println(" - BAIXA DE PRODUTOS - ");
-                    System.out.println("----------------------------------------------------------------------");
-                    System.out.println("----------------------------------------------------------------------");
-                    funct.baixaDprod();
-
-                    moreOrClose();
-
-                    if (moreOrclose == 1){
-                            System.out.println("----------------------------------------------------------------------");
-                            System.out.println("O que você gostaria de fazer ?");
-                                auxAlmoxarife(); 
-                        }
-
-                break; 
-
-                case 2: 
-                    System.out.println("----------------------------------------------------------------------");
-                    System.out.println(" - Posição de estoque Simplificado - ");
-                    System.out.println("----------------------------------------------------------------------");
-                        funct.consultarProd();
+                        System.out.println("----------------------------------------------------------------------");
                         System.out.println(" ");
+                        System.out.println("-------------------------+ BAIXA DE PRODUTOS +------------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
+                        funct.baixaDprod();
 
-                        // Continuar ou finalizar programa
-
-                        moreOrClose(); 
+                        moreOrClose();
 
                         if (moreOrclose == 1){
-                            System.out.println("----------------------------------------------------------------------");
-                            System.out.println("O que você gostaria de fazer ?");
-                                auxAlmoxarife(); 
-                        }
-                break;
-            }
+                                System.out.println("----------------------------------------------------------------------");
+                                System.out.println("O que você gostaria de fazer ?");
+                                    auxAlmoxarife(); 
+                            }
+
+                    break; 
+
+                    case 2: 
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println(" ");
+                        System.out.println("------------------+ POSIÇÃO DE ESTOQUE SIMPLIFICADO +-----------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
+                            funct.consultarProd();
+                            System.out.println(" ");
+
+                            // Continuar ou finalizar programa
+
+                            moreOrClose(); 
+
+                            if (moreOrclose == 1){
+                                System.out.println("----------------------------------------------------------------------");
+                                System.out.println("O que você gostaria de fazer ?");
+                                    auxAlmoxarife(); 
+                            }
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Por favor, digite apenas números.");
+                input.nextLine(); // Limpa o buffer do scanner (remove o texto inválido)
+                buscar = false; 
+            }   
+            
         } while(buscar == false);       
     }
     
@@ -81,6 +92,7 @@ public class cargo {
             System.out.println("3 - Inventario de Produtos "); // ok 
             System.out.println("4 - Entrar com notas ficais"); // ok 
             System.out.println("5 - Relatórios"); // semi-estruturado 
+            System.out.println("6 - Redefinir senha"); // semi-estruturado 
             System.out.println("----------------------------------------------------------------------");
             try{    
             
@@ -201,7 +213,7 @@ public class cargo {
                             System.out.println(" ");
                             System.out.println("1 - Posição de Estoque");
                             System.out.println("2 - Consumo");
-                            System.out.println("3 - Lista de compras Mensal");
+                            System.out.println("3 - Entrada de produtos");
                             System.out.println(" ");
                             System.out.println("----------------------------------------------------------------------");
                             try{    
@@ -243,8 +255,8 @@ public class cargo {
                                     break;
 
                                     case 3: 
-                                        // Metodo do Relátorio de Lista de compras mensal
-
+                                        // Metodo do Relatório de Entrada de produtos 
+                                        
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -256,12 +268,16 @@ public class cargo {
                                 }
                             } catch (InputMismatchException e) {
                             System.out.println("Entrada inválida! Por favor, digite apenas números.");
-                            input.nextLine();
-                            buscar = false; // Limpa o buffer do scanner (remove o texto inválido)
+                            input.nextLine(); // Limpa o buffer do scanner (remove o texto inválido)
+                            buscar = false; 
                             }    
                         // Return menu de relatórios 
                         } while (buscar == false); 
-                    break;        
+                    break;
+                    case 6:
+                    // Metodo de redefinir senha 
+                        
+                    break;    
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Por favor, digite apenas números.");
@@ -274,7 +290,208 @@ public class cargo {
         
     public void farmaceutico(){
         
+        do {    buscar = true;
+            System.out.println("1 - Realizar baixa"); // ok 
+            System.out.println("2 - Criar Produto"); // ok 
+            System.out.println("3 - Inventario de Produtos "); // ok 
+            System.out.println("4 - Entrar com notas ficais"); // ok 
+            System.out.println("5 - Relatórios"); // semi-estruturado 
+            System.out.println("6 - Redefinir senha"); // semi-estruturado 
+            System.out.println("----------------------------------------------------------------------");
+            try{    
+            
+                options = input.nextInt();
+                System.out.println("----------------------------------------------------------------------");    
+                
+                switch(options){
+
+                    default:
+                        System.out.println("Opção inválida, por favor escolha uma opção de 1 a 5");
+                        System.out.println("----------------------------------------------------------------------");    
+                        System.out.println("");
+                        System.out.println("O que você gostaria de fazer hoje ? ");
+                        System.out.println("");
+                        buscar = false; 
+                        break; 
+
+                    case 1: 
+                    // Metodo de realizar baixa       
+
+
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println(" ");
+                        System.out.println("-------------------------+ BAIXA DE PRODUTOS +------------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
+                        funct.baixaDprod();
+                        System.out.println(" ");
+
+                        moreOrClose();
+
+                        if (moreOrclose == 1){
+                                System.out.println("----------------------------------------------------------------------");
+                                System.out.println("O que você gostaria de fazer ?");
+                                    farmaceutico(); 
+                            }
+                    break;  
+
+                    case 2: 
+                    // Metodo de Criar Produtos
+
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println(" ");
+                        System.out.println("--------------------------+ CRIAR PRODUTOS +--------------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
+
+                        funct.CreateProd();
+
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Deseja Visualizar todos os produtos ?");
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Digite 1 para visualizar os produtos, ou qualquer tecla para continuar");
+                        System.out.println("----------------------------------------------------------------------");
+                            options = input.nextInt();
+                        System.out.println("----------------------------------------------------------------------");
+
+                        if (options == 1){
+                            funct.consultarProd();
+                        }
+
+                        moreOrClose();
+
+                        if (moreOrclose == 1){
+                            System.out.println("O que você gostaria de fazer agora ?");
+                            System.out.println("----------------------------------------------------------------------");
+                            farmaceutico();
+                        }
+                    break;
+
+                    case 3: 
+                    // Metodo de Invetariar produtos 
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------+ INVENTÁRIO +----------------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
+
+                        funct.invProd();
+                        moreOrClose();
+
+                        if (moreOrclose == 1){
+                            System.out.println("O que você gostaria de fazer agora ?");
+                            System.out.println("----------------------------------------------------------------------");
+                            farmaceutico();
+                        }
+                    break;
+
+                    case 4: 
+                    // Metodo de Entrar com notas Ficais 
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println(" ");
+                        System.out.println("---------------------+ ENTRAR COM NOTAS FISCAIS +---------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
+                        funct.notaFiscal(); 
+
+                        moreOrClose();
+
+                        if (moreOrclose == 1){
+                            System.out.println("O que você gostaria de fazer agora ?");
+                            System.out.println("----------------------------------------------------------------------");
+                                farmaceutico();
+                        }
+                        break;
+
+                    case 5: 
+                        // Metodo de Tirar Relatório 
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------+ RELATÓRIOS +----------------------------");
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");                   
+
+                        do{ System.out.println(" ");
+                            System.out.println("Qual relatório você gostaria de visualizar: ");
+                            System.out.println("----------------------------------------------------------------------");
+                            System.out.println(" ");
+                            System.out.println("1 - Posição de Estoque");
+                            System.out.println("2 - Consumo");
+                            System.out.println("3 - Entrada de produtos");
+                            System.out.println(" ");
+                            System.out.println("----------------------------------------------------------------------");
+                            try{    
+                                options = input.nextInt();
+                                input.nextLine(); // limpa no numero 
+
+                                switch (options) {
+
+                                    default: 
+                                        System.out.println("----------------------------------------------------------------------");
+                                        System.out.println("Código inválido, por gentileza selecione uma opção de 1 a 3 !");
+                                        System.out.println("----------------------------------------------------------------------");
+                                        buscar = false; 
+                                    break; 
+
+                                    case 1 : 
+                                        // Metodo do Relatorio da posição de estoque
+                                        funct.pos_estoque();
+
+                                        moreOrClose(); 
+
+                                        if (moreOrclose == 1){
+                                            System.out.println("----------------------------------------------------------------------");
+                                            System.out.println("O que você gostaria de fazer ?");
+                                                farmaceutico();
+                                        }
+
+                                    break; 
+
+                                    case 2 : 
+                                        // Metodo do Relatório de consumo 
+                                        moreOrClose(); 
+
+                                        if (moreOrclose == 1){
+                                            System.out.println("----------------------------------------------------------------------");
+                                            System.out.println("O que você gostaria de fazer ?");
+                                                farmaceutico();
+                                        }
+                                    break;
+
+                                    case 3: 
+                                        // Metodo do Relatório de Entrada de produtos 
+                                        
+                                        moreOrClose(); 
+
+                                        if (moreOrclose == 1){
+                                            System.out.println("----------------------------------------------------------------------");
+                                            System.out.println("O que você gostaria de fazer ?");
+                                                farmaceutico();
+                                        }
+                                    break;
+                                }
+                            } catch (InputMismatchException e) {
+                            System.out.println("Entrada inválida! Por favor, digite apenas números.");
+                            input.nextLine(); // Limpa o buffer do scanner (remove o texto inválido)
+                            buscar = false; 
+                            }    
+                        // Return menu de relatórios 
+                        } while (buscar == false); 
+                    break;
+                    case 6:
+                    // Metodo de redefinir senha 
+                        
+                    break;    
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Por favor, digite apenas números.");
+                input.nextLine();
+                buscar = false; // Limpa o buffer do scanner (remove o texto inválido)
+            } 
+        // Return menu de Almoxarife     
+        } while (buscar == false);   
     }
+        
     
     public void admin(){
         
