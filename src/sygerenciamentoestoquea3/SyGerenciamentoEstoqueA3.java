@@ -5,7 +5,6 @@
  */
 package sygerenciamentoestoquea3;
 
-
 import java.util.Scanner;
 import java.sql.*; 
 import java.util.logging.Level;
@@ -43,6 +42,7 @@ public class SyGerenciamentoEstoqueA3 {
     System.out.println(" ");
     System.out.println("----------------------------------------------------------------------");
     
+    
     // Pega nome e sobre nome do Usuário 
     nomeCurto = funct.nomeCurto(loginMain);
     
@@ -61,7 +61,6 @@ public class SyGerenciamentoEstoqueA3 {
             System.out.println(" ");
             System.out.println(nomeCurto + " -+- " + cargoMain);
             System.out.println(" ");
-            System.out.println("----------------------------------------------------------------------");
             System.out.println("----------------------------------------------------------------------");
             System.out.println(" ");
             System.out.println("Olá " + nomeCurto+",");
