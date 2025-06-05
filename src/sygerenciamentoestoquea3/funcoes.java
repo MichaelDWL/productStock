@@ -45,7 +45,7 @@ public class funcoes {
                 int qtde = rs.getInt("qtde");
                 
                 System.out.println("----------------------------------------------------------------------");
-                System.out.println(" / ID: " + id + " / Nome: " + nome + " / Valor: " + Vr + " / Quantidade: " + qtde + " / ");
+                System.out.println(" / COD: " + id + " / Nome: " + nome + " / Valor: " + Vr + " / Quantidade: " + qtde + " / ");
                 System.out.println("----------------------------------------------------------------------");
             }   
             
@@ -413,7 +413,7 @@ public class funcoes {
             } catch (SQLException ex) {
                 System.out.println("Erro ao entrar com a nota");
                 Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
                 buscar = false;
             }
             
@@ -422,17 +422,17 @@ public class funcoes {
         
         // PARTE 3 - DADOS DO PRODUTO      
         do{
-        do{ System.out.println("**********************************************************************");
+        do{ System.out.println("----------------------------------------------------------------------");
             System.out.println("Selecine o Produto que você deseja entrar");
 
             ResultSet resultado = verificaDB();
 
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
             System.out.print("Digite a quantidade do produto: ");
                 qtdeNFE = input.nextInt(); 
             System.out.print("Digite seu valor unitário: ");
                 vrUn = input.nextDouble(); 
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
 
             // PARTE 3 - ADICIONAR QTDE NO BANCO  
             
@@ -462,14 +462,14 @@ public class funcoes {
                         if (linhasAfetadas > 0) {
                             System.out.println("Nota Fiscal Entrada com sucesso");
                             System.out.println("Novos dados para " +name+": Qtde: " + qtdeSOMA + " Vr: "+vrUn);
-                            System.out.println("**********************************************************************"); 
+                            System.out.println("----------------------------------------------------------------------");
                         } 
 
                         else {
                             System.out.println("Erro ao entrar com a nota Fiscal !");
-                            System.out.println("**********************************************************************");
+                            System.out.println("----------------------------------------------------------------------");
                             System.out.println("Tente novamente");
-                            System.out.println("**********************************************************************");
+                            System.out.println("----------------------------------------------------------------------");
                             buscar = false;
                         }
                     
@@ -510,11 +510,11 @@ public class funcoes {
             buscar = true; 
         
             consultarProd(); // imprime a lista de produtos com os códigos 
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
             System.out.print("Digite o código do produto: ");
                 
         do{ codProd = input.nextInt();
-            System.out.println("**********************************************************************");
+            System.out.println("----------------------------------------------------------------------");
             try {
                 // Seleciona um produto dentro da tabela produto onde o ID é igual a...
                 String sql = "select * from produtos where ID = ?";
@@ -536,14 +536,14 @@ public class funcoes {
                 else {
                     System.out.println("Código NÃO encontrado, selecione um produto cadastrado");
                     System.out.println("Digite novamente o código do produto");
-                    System.out.println("**********************************************************************");
+                    System.out.println("----------------------------------------------------------------------");
                     buscar = false;
                 }
             }  
             // se ocorrer algum erro, vai mostrar a pilha de execução do erro 
             catch (SQLException e) {
                 e.printStackTrace();
-                System.out.println("**********************************************************************");
+                System.out.println("----------------------------------------------------------------------");
             }
         } while(buscar == false);
 
@@ -701,6 +701,83 @@ public class funcoes {
             }
         } while(buscar == false);    
     }
+    
+    // Relatório de Entrada 
+    public void EntradaProd(){
+        
+        buscar = true; 
+        StringBuilder dados = new StringBuilder();
+        
+        try{
+    
+            // Criar o objeto Statement para enviar comandos SQL
+            Statement stmt = conn.createStatement();
+
+            // SQL de consulta
+            String sql = "SELECT * FROM produtos";
+
+            // Executar o SELECT
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Percorrer os resultados
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String nome = rs.getString("nome");
+                int qtde = rs.getInt("qtde");
+                int cons = rs.getInt("consumo");
+                
+                String linha = id + "," + nome + "," + qtde + "," + cons; // armazena os dados nessa variavel 
+                
+                dados.append(linha).append("\n"); //Coloca na variavel "dados" a String da variavel linha 
+                
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println(" / ID: " + id + " / Nome: " + nome + " / Quantidade: " + qtde + " / Consumo: " + cons + " / ");
+                System.out.println("----------------------------------------------------------------------");
+            }   
+            
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar: " + e.getMessage());
+        }
+        
+        do{ System.out.print("Deseja salvar o relatório em CSV? (s/n): ");
+                String opt = input.next();
+                input.nextLine(); // tira a linha em branco que buga 
+                
+            if (opt.equalsIgnoreCase("s")) {
+                System.out.print("Digite o nome do arquivo: ");
+                String name_relat = input.nextLine();
+
+                // Caminho fixo
+                String pasta = "C:/Users/maiqu/OneDrive/Área de Trabalho/relatorios";
+
+                // Cria a pasta se não existir
+                File dir = new File(pasta);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                // Garante separador no final do caminho (bug que nao salva arquivo)
+                if (!pasta.endsWith("/") && !pasta.endsWith("\\")) {
+                    pasta += "/";
+                }
+
+                // Monta o caminho completo
+                String caminhoCompleto = pasta + name_relat;
+                if (!caminhoCompleto.toLowerCase().endsWith(".csv")) {
+                    caminhoCompleto += ".csv";
+                }
+
+                salvarCSV(dados.toString(), caminhoCompleto);
+            }
+            else if(opt.equalsIgnoreCase("n")) {
+                System.out.println("ok, prosseguindo...");
+            }
+            else {
+                System.out.println("Por favor, escolha uma opção válida");
+                buscar = false;
+            }
+        } while(buscar == false);    
+    }
 
     // Salvar relatório em CSV
     public void salvarCSV(String conteudo, String caminhoCompleto) {
@@ -749,7 +826,9 @@ public class funcoes {
         }
          
     }
+     
     
+   
     // Definir a senha para o valor padrão 0000 
     public void resetPassword(String Login){
         
@@ -1036,9 +1115,6 @@ public class funcoes {
         } catch (SQLException ex) {
             Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-
     }
     
     // Converte o cargo inserir no banco de dados de maneira padrão 
