@@ -57,7 +57,6 @@ public class SyGerenciamentoEstoqueA3 {
             Logger.getLogger(SyGerenciamentoEstoqueA3.class.getName()).log(Level.SEVERE, null, ex);
             }
         
-            System.out.println("----------------------------------------------------------------------");
             System.out.println(" ");
             System.out.println(nomeCurto + " -+- " + cargoMain);
             System.out.println(" ");
@@ -66,7 +65,7 @@ public class SyGerenciamentoEstoqueA3 {
             System.out.println("Olá " + nomeCurto+",");
             System.out.println(" ");
             System.out.println("O que você gostaria de fazer hoje? ");
-            System.out.println(" ");
+            
             
            // Vai pegar o cargo e retornar um numero int
             int optCargo = funct.optCargo(cargoMain);
