@@ -87,26 +87,30 @@ public class cargo {
     public void almoxarife(){
             
     do {    buscar = true;
+            System.out.println(" ");
             System.out.println("1 - Realizar baixa"); // ok 
             System.out.println("2 - Criar Produto"); // ok 
             System.out.println("3 - Inventario de Produtos "); // ok 
             System.out.println("4 - Entrar com notas ficais"); // ok 
             System.out.println("5 - Relatórios"); // semi-estruturado 
             System.out.println("6 - Redefinir senha"); // semi-estruturado 
+            System.out.println(" ");
             System.out.println("----------------------------------------------------------------------");
-            try{    
-            
+            try{
                 options = input.nextInt();
-                System.out.println("----------------------------------------------------------------------");    
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println(" ");
+                System.out.println(" ");
+                input.nextLine();
                 
                 switch(options){
 
                     default:
                         System.out.println("Opção inválida, por favor escolha uma opção de 1 a 5");
                         System.out.println("----------------------------------------------------------------------");    
-                        System.out.println("");
+                        System.out.println(" ");
                         System.out.println("O que você gostaria de fazer hoje ? ");
-                        System.out.println("");
+                        System.out.println(" ");
                         buscar = false; 
                         break; 
 
@@ -133,7 +137,8 @@ public class cargo {
 
                     case 2: 
                     // Metodo de Criar Produtos
-
+                        
+                        System.out.println(" ");
                         System.out.println("----------------------------------------------------------------------");
                         System.out.println(" ");
                         System.out.println("--------------------------+ CRIAR PRODUTOS +--------------------------");
@@ -157,6 +162,8 @@ public class cargo {
                         moreOrClose();
 
                         if (moreOrclose == 1){
+                            
+                            System.out.println("----------------------------------------------------------------------");
                             System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
                             almoxarife();
@@ -175,6 +182,7 @@ public class cargo {
                         moreOrClose();
 
                         if (moreOrclose == 1){
+                            System.out.println("----------------------------------------------------------------------");
                             System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
                             almoxarife();
@@ -193,6 +201,7 @@ public class cargo {
                         moreOrClose();
 
                         if (moreOrclose == 1){
+                            System.out.println("----------------------------------------------------------------------");
                             System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
                                 almoxarife();
@@ -232,7 +241,11 @@ public class cargo {
                                     case 1 : 
                                         // Metodo do Relatorio da posição de estoque
                                         funct.pos_estoque();
-
+                                        
+                                        System.out.println(" ");
+                                        System.out.println("----------------------------------------------------------------------");
+                                        System.out.println(" ");
+                                        System.out.println("----------------------------------------------------------------------");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -245,6 +258,10 @@ public class cargo {
 
                                     case 2 : 
                                         // Metodo do Relatório de consumo 
+                                        funct.consProd();
+                                        
+                                        System.out.println(" ");
+                                        System.out.println("----------------------------------------------------------------------");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -289,28 +306,32 @@ public class cargo {
     }
         
     public void farmaceutico(){
-        
-        do {    buscar = true;
+                    
+    do {    buscar = true;
+            System.out.println(" ");
             System.out.println("1 - Realizar baixa"); // ok 
             System.out.println("2 - Criar Produto"); // ok 
             System.out.println("3 - Inventario de Produtos "); // ok 
             System.out.println("4 - Entrar com notas ficais"); // ok 
             System.out.println("5 - Relatórios"); // semi-estruturado 
             System.out.println("6 - Redefinir senha"); // semi-estruturado 
+            System.out.println(" ");
             System.out.println("----------------------------------------------------------------------");
-            try{    
-            
+            try{
                 options = input.nextInt();
-                System.out.println("----------------------------------------------------------------------");    
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println(" ");
+                System.out.println(" ");
+                input.nextLine();
                 
                 switch(options){
 
                     default:
                         System.out.println("Opção inválida, por favor escolha uma opção de 1 a 5");
                         System.out.println("----------------------------------------------------------------------");    
-                        System.out.println("");
+                        System.out.println(" ");
                         System.out.println("O que você gostaria de fazer hoje ? ");
-                        System.out.println("");
+                        System.out.println(" ");
                         buscar = false; 
                         break; 
 
@@ -337,7 +358,8 @@ public class cargo {
 
                     case 2: 
                     // Metodo de Criar Produtos
-
+                        
+                        System.out.println(" ");
                         System.out.println("----------------------------------------------------------------------");
                         System.out.println(" ");
                         System.out.println("--------------------------+ CRIAR PRODUTOS +--------------------------");
@@ -361,6 +383,8 @@ public class cargo {
                         moreOrClose();
 
                         if (moreOrclose == 1){
+                            
+                            System.out.println("----------------------------------------------------------------------");
                             System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
                             farmaceutico();
@@ -379,6 +403,7 @@ public class cargo {
                         moreOrClose();
 
                         if (moreOrclose == 1){
+                            System.out.println("----------------------------------------------------------------------");
                             System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
                             farmaceutico();
@@ -397,6 +422,7 @@ public class cargo {
                         moreOrClose();
 
                         if (moreOrclose == 1){
+                            System.out.println("----------------------------------------------------------------------");
                             System.out.println("O que você gostaria de fazer agora ?");
                             System.out.println("----------------------------------------------------------------------");
                                 farmaceutico();
@@ -436,19 +462,27 @@ public class cargo {
                                     case 1 : 
                                         // Metodo do Relatorio da posição de estoque
                                         funct.pos_estoque();
-
+                                        
+                                        System.out.println(" ");
+                                        System.out.println("----------------------------------------------------------------------");
+                                        System.out.println(" ");
+                                        System.out.println("----------------------------------------------------------------------");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
                                             System.out.println("----------------------------------------------------------------------");
                                             System.out.println("O que você gostaria de fazer ?");
-                                                farmaceutico();
+                                                farmaceutico(); 
                                         }
 
                                     break; 
 
                                     case 2 : 
                                         // Metodo do Relatório de consumo 
+                                        funct.consProd();
+                                        
+                                        System.out.println(" ");
+                                        System.out.println("----------------------------------------------------------------------");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -488,8 +522,9 @@ public class cargo {
                 input.nextLine();
                 buscar = false; // Limpa o buffer do scanner (remove o texto inválido)
             } 
-        // Return menu de Almoxarife     
+        // Return menu de Farmacêutico     
         } while (buscar == false);   
+    
     }
         
     
