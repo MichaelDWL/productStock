@@ -83,10 +83,10 @@ public class funcoes {
             
     // Criar produtos 
     public void CreateProd() {
-
             String nome, und, controleEspecial;
 
             System.out.println("Digite o nome do produto: ");
+                input.nextLine(); // limpar 
                 nome = input.nextLine(); 
                 
             System.out.println("----------------------------------------------------------------------");
@@ -468,8 +468,10 @@ public class funcoes {
                     // Pega a quantidade e o nome do produto no banco 
                     quantidadeAtual = resultado.getInt("qtde");
                     name = resultado.getString("nome");
-
+                    
+                    System.out.println(" ");
                     System.out.println("Quantidade atual de: "+ name +" é de " + quantidadeAtual);
+                    System.out.println(" ");
                     System.out.println("ALERTA ! Você irá substituir a quantidade atual do produto em estoque");
                     System.out.println("----------------------------------------------------------------------");
                     System.out.println("Qual a quantidade real de " + name + " existe no estoque fisico ?");
@@ -500,6 +502,7 @@ public class funcoes {
                     // Se existir linhas afetadas 
                     if (linhasAfetadas > 0) {
                         System.out.println("Dados do produto atualizados com sucesso!");
+                        System.out.println(" ");
                         System.out.println("Novos dados para o produto: Qtde: " + newQtde + "/ lote: " + newLote + "/ Validade: " +newDt);
                         System.out.println("----------------------------------------------------------------------");
                     } 

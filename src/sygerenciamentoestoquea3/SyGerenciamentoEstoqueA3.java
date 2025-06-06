@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  */
 
 public class SyGerenciamentoEstoqueA3 {
-
+    
     public static void main(String[] args) {
-        
+          
         conexaodb.conectar();
         Scanner input = new Scanner(System.in);
         cargo cargoF = new cargo(); 
@@ -31,7 +31,7 @@ public class SyGerenciamentoEstoqueA3 {
     System.out.println("-------------------------------+ LOGIN +------------------------------");
     System.out.println(" ");
     System.out.println("----------------------------------------------------------------------");                   
-
+    
     System.out.println(" ");
     System.out.println("Olá, Seja bem vindo !");
     System.out.println(" ");
@@ -45,6 +45,9 @@ public class SyGerenciamentoEstoqueA3 {
     
     // Pega nome e sobre nome do Usuário 
     nomeCurto = funct.nomeCurto(loginMain);
+    
+    // Passa o login como parametro para o cargo
+    cargoF.getLoginMain(loginMain);
     
     // Verifica acesso do usuário 
     ResultSet rs = funct.verificaAcesso(loginMain, senhaMain); 
