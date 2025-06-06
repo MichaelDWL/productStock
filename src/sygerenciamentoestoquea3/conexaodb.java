@@ -4,14 +4,19 @@ import java.sql.*;
 
 public class conexaodb {
 
+    private static Connection conn = null;
+
     public static Connection conectar() {
-        Connection conn = null;
+        if (conn != null) {
+            return conn;
+        }
+
         String url = "jdbc:mysql://localhost:3306/";
         String usuario = "root";
         String senha = "";
 
         try {
-            // 1. Conecta ao servidor MySQL (sem selecionar banco)
+            // 1. Conecta ao servidor MySQL
             conn = DriverManager.getConnection(url, usuario, senha);
             System.out.println("Conectado com sucesso ao servidor!");
 
@@ -20,19 +25,17 @@ public class conexaodb {
             stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS estoque");
             System.out.println("Banco verificado/criado com sucesso!");
 
-            // 3. Fecha a conexão anterior e conecta ao banco 'estoque'
+            // 3. Conecta ao banco 'estoque'
             conn.close();
             conn = DriverManager.getConnection(url + "estoque", usuario, senha);
             System.out.println("Conectado com sucesso ao banco de dados 'estoque'!");
 
             // 4. Novo Statement com a nova conexão
             stmt = conn.createStatement();
-
             criarTabelas(stmt);
             inserirUsuarioAdmin(stmt);
-
             System.out.println("Tabelas verificadas/criadas com sucesso!");
-        
+
         } catch (SQLException e) {
             System.out.println("Erro de conexão: " + e.getMessage());
         }
