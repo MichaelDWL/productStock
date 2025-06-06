@@ -273,7 +273,9 @@ public class cargo {
 
                                     case 3: 
                                         // Metodo do Relatório de Entrada de produtos 
+                                        funct.relatorioNotas();
                                         
+                                        System.out.println(" ");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -448,7 +450,7 @@ public class cargo {
                             System.out.println("----------------------------------------------------------------------");
                             try{    
                                 options = input.nextInt();
-                                input.nextLine(); // limpa no numero 
+                                input.nextLine(); // limpa o espaço vazio
 
                                 switch (options) {
 
