@@ -132,6 +132,157 @@ public class funcoes {
         
         int qtdeDB = 0; 
         String nome, nome_prod = null, undMedida = null;
+        String medControlado = "nao"; 
+        int qtdeBaixa,escolha, cons = 0;
+        ResultSet rs; 
+        buscar = true;
+        
+        do{ System.out.println(" ");
+            System.out.println("Você deseja dar baixa para: ");
+            System.out.println(" ");
+            System.out.println("1 - Paciente ");
+            System.out.println("2 - Setor ");
+            System.out.println(" ");
+            System.out.println("----------------------------------------------------------------------");
+
+            try{
+                escolha = input.nextInt();
+                input.nextLine(); // Limpar o buffer
+                System.out.println("----------------------------------------------------------------------");
+
+                switch (escolha) {
+
+                    default: 
+                        System.out.println("opção inválida, por favor escolha uma opção de 1 a 2");
+                        System.out.println("----------------------------------------------------------------------");
+                        buscar = false; 
+                    break;
+                    //BAIXA P/ PACIENTE
+                    case 1:
+                        System.out.print("Digite o nome do paciente: ");
+                        nome = input.nextLine();
+
+                        rs = verificaDB();
+
+                        try {
+
+                            if (rs.next()){
+                                qtdeDB = rs.getInt("qtde");
+                                nome_prod = rs.getString("nome"); 
+                                cons = rs.getInt("consumo");
+                                undMedida = rs.getString("unidade");
+                                medControlado = rs.getString("controlados");
+                            }
+                            if (medControlado.equalsIgnoreCase("sim")){
+                                    System.out.println(" ");
+                                    System.out.println("Esse é um medicamento Controlado!");
+                                    System.out.println(" ");
+                                    System.out.println("Apenas Farmacêuticos podem movimentar produtos sugeitos a controle ");
+                                    System.out.println("especial, segundo a portaria 344/98. ");
+                                    break;
+                                }
+                                
+                        } catch (SQLException ex) {
+                            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        System.out.println("Quantidade disponível: " + qtdeDB);
+                        System.out.println(" ");
+                        
+                        if (qtdeDB == 0) {
+                            System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
+                        }
+                        else{
+                            System.out.print("Você deseja dar baixa em quantas unidades? : ");
+                            qtdeBaixa = input.nextInt();
+                            System.out.println(" ");
+
+                            if (qtdeBaixa > qtdeDB) {
+                                System.out.println("Erro: quantidade digitada maior que a disponível.");
+                            } 
+                            else {
+                                qtdeDB -= qtdeBaixa;
+                                alterarQtde(codProd, qtdeDB);   
+
+                                cons += qtdeBaixa;
+                                addCons(codProd, cons);
+
+                                System.out.println("Baixa feita para paciente " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
+                                System.out.println("Nova quantidade no estoque: " + qtdeDB);
+                            }
+                        }    
+                    break;
+
+                    // BAIXA P/ SETOR 
+                    case 2 :
+
+                        System.out.print("Digite o Setor de destino: ");
+                        nome = input.nextLine();
+
+                        rs = verificaDB();
+
+                        try {
+
+                            if (rs.next()){
+                                qtdeDB = rs.getInt("qtde");
+                                nome_prod = rs.getString("nome"); 
+                                cons = rs.getInt("consumo");
+                                undMedida = rs.getString("unidade");
+                                medControlado = rs.getString("controlados");
+                            }
+                                
+                            if (medControlado.equalsIgnoreCase("sim")){
+                                System.out.println("Esse é um medicamento Controlado!");
+                                System.out.println(" ");
+                                System.out.println("Apenas Farmacêuticos podem movimentar produtos sugeitos a controle especial");
+                                System.out.println("segundo a portaria 344/98. ");
+                                break;
+                            }
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                        System.out.println("Quantidade disponível: " + qtdeDB);
+                        System.out.println(" ");
+
+                        if (qtdeDB == 0) {
+                            System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
+                        }
+                        else{
+                            System.out.print("Você deseja dar baixa em quantas unidades ? : ");
+                            System.out.println(" ");
+
+                            qtdeBaixa = input.nextInt();
+
+                            if (qtdeBaixa > qtdeDB) {
+                                System.out.println("Erro: quantidade digitada maior que a disponível.");
+                            } 
+                            else {
+                                qtdeDB -= qtdeBaixa;
+                                alterarQtde(codProd, qtdeDB);
+
+                                cons += qtdeBaixa;
+                                addCons(codProd, cons);
+
+                                System.out.println("Baixa feita para setor: " + nome + ", " + qtdeBaixa + " " + undMedida + ", de "+ nome_prod);
+                                System.out.println("Nova quantidade no estoque: " + qtdeDB);
+                            }
+                        }
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                    System.out.println("Entrada inválida! Por favor, digite apenas números.");
+                    input.nextLine();
+                    buscar = false; // Limpa o buffer do scanner (remove o texto inválido)
+            }
+        } while(buscar == false);    
+    }    
+    
+    public void baixaControlados() {
+        
+        int qtdeDB = 0; 
+        String nome, nome_prod = null, undMedida = null;
         int qtdeBaixa,escolha, cons = 0;
         ResultSet rs; 
         buscar = true;
@@ -171,7 +322,7 @@ public class funcoes {
                                 cons = rs.getInt("consumo");
                                 undMedida = rs.getString("unidade");
                             }
-
+                                
                         } catch (SQLException ex) {
                             Logger.getLogger(funcoes.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -182,6 +333,7 @@ public class funcoes {
                         if (qtdeDB == 0) {
                             System.out.println("Produto sem estoque, não é possivel realizar a baixa.");    
                         }
+                        
                         else{
                             System.out.print("Você deseja dar baixa em quantas unidades? : ");
                             System.out.println(" ");
@@ -258,7 +410,7 @@ public class funcoes {
                     buscar = false; // Limpa o buffer do scanner (remove o texto inválido)
             }
         } while(buscar == false);    
-    }    
+    }
     
     // Altera a quantidade no banco de dados 
     public void alterarQtde (int codPRod,int qtdeDB){
@@ -524,41 +676,41 @@ public class funcoes {
             System.out.println("----------------------------------------------------------------------");
             System.out.print("Digite o código do produto: ");
                 
-        do{ codProd = input.nextInt();
-            System.out.println("----------------------------------------------------------------------");
-            try {
-                // Seleciona um produto dentro da tabela produto onde o ID é igual a...
-                String sql = "select * from produtos where ID = ?";
-                
-                // Coloca a sintaxe de conectar/consultar na variavel stmt  
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                
-                // Substitui a interrogação que existe na string sql 
-                stmt.setInt(1, codProd); 
-
-                // Executa a consulta e coloca o retorno dela em "Resultado"
-                resultado = stmt.executeQuery();
-                
-                // Verifica se existe algum resultado 
-                if (resultado.isBeforeFirst()) {
-                    System.out.println("Código encontrado no banco de dados.");
-                }
-                
-                else {
-                    System.out.println("Código NÃO encontrado, selecione um produto cadastrado");
-                    System.out.println("Digite novamente o código do produto");
-                    System.out.println("----------------------------------------------------------------------");
-                    buscar = false;
-                }
-            }  
-            // se ocorrer algum erro, vai mostrar a pilha de execução do erro 
-            catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("----------------------------------------------------------------------");
+        do {
+        try {
+            codProd = input.nextInt();
+            buscar = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Digite apenas números.");
+                input.nextLine(); // limpa o buffer
+                buscar = false;
+                continue;
             }
-        } while(buscar == false);
 
-      return resultado;
+        System.out.println("----------------------------------------------------------------------");
+        try {
+            String sql = "SELECT * FROM produtos WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, codProd);
+            resultado = stmt.executeQuery();
+
+            if (resultado.isBeforeFirst()) {
+                System.out.println("Código encontrado no banco de dados.");
+            } 
+            
+            else {
+                System.out.println("Código NÃO encontrado, selecione um produto cadastrado");
+                System.out.println("Digite novamente o código do produto");
+                System.out.println("----------------------------------------------------------------------");
+                buscar = false;
+            }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                buscar = false;
+            }
+        } while (!buscar);
+
+          return resultado;
     }
     
     
