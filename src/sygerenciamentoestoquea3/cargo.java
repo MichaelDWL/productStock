@@ -278,11 +278,7 @@ public class cargo {
                                         System.out.println(" ");
                                         moreOrClose(); 
 
-                                        if (moreOrclose == 1){
-                                            System.out.println("----------------------------------------------------------------------");
-                                            System.out.println("O que você gostaria de fazer ?");
-                                                almoxarife();
-                                        }
+                                        
                                     break;
                                 }
                             } catch (InputMismatchException e) {
@@ -339,16 +335,17 @@ public class cargo {
 
                     case 1: 
                     // Metodo de realizar baixa       
-
-
+                        
                         System.out.println("----------------------------------------------------------------------");
                         System.out.println(" ");
                         System.out.println("-------------------------+ BAIXA DE PRODUTOS +------------------------");
                         System.out.println(" ");
                         System.out.println("----------------------------------------------------------------------");
-                        funct.baixaDprod();
+                        funct.baixaControlados();
                         System.out.println(" ");
-
+                        
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
                         moreOrClose();
 
                         if (moreOrclose == 1){
@@ -381,7 +378,9 @@ public class cargo {
                         if (options == 1){
                             funct.consultarProd();
                         }
-
+                        
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
                         moreOrClose();
 
                         if (moreOrclose == 1){
@@ -395,6 +394,7 @@ public class cargo {
 
                     case 3: 
                     // Metodo de Invetariar produtos 
+                        
                         System.out.println("----------------------------------------------------------------------");
                         System.out.println(" ");
                         System.out.println("----------------------------+ INVENTÁRIO +----------------------------");
@@ -402,6 +402,9 @@ public class cargo {
                         System.out.println("----------------------------------------------------------------------");
 
                         funct.invProd();
+                        
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
                         moreOrClose();
 
                         if (moreOrclose == 1){
@@ -414,6 +417,7 @@ public class cargo {
 
                     case 4: 
                     // Metodo de Entrar com notas Ficais 
+                        
                         System.out.println("----------------------------------------------------------------------");
                         System.out.println(" ");
                         System.out.println("---------------------+ ENTRAR COM NOTAS FISCAIS +---------------------");
@@ -421,6 +425,8 @@ public class cargo {
                         System.out.println("----------------------------------------------------------------------");
                         funct.notaFiscal(); 
 
+                        System.out.println(" ");
+                        System.out.println("----------------------------------------------------------------------");
                         moreOrClose();
 
                         if (moreOrclose == 1){
@@ -432,7 +438,8 @@ public class cargo {
                         break;
 
                     case 5: 
-                        // Metodo de Tirar Relatório 
+                    // Metodo de Tirar Relatório 
+                        
                         System.out.println("----------------------------------------------------------------------");
                         System.out.println(" ");
                         System.out.println("----------------------------+ RELATÓRIOS +----------------------------");
@@ -462,7 +469,8 @@ public class cargo {
                                     break; 
 
                                     case 1 : 
-                                        // Metodo do Relatorio da posição de estoque
+                                    // Metodo do Relatorio da posição de estoque
+                                    
                                         funct.pos_estoque();
                                         
                                         System.out.println(" ");
@@ -480,7 +488,8 @@ public class cargo {
                                     break; 
 
                                     case 2 : 
-                                        // Metodo do Relatório de consumo 
+                                    // Metodo do Relatório de consumo 
+                                    
                                         funct.consProd();
                                         
                                         System.out.println(" ");
@@ -495,8 +504,10 @@ public class cargo {
                                     break;
 
                                     case 3: 
-                                        // Metodo do Relatório de Entrada de produtos 
+                                    // Metodo do Relatório de Entrada de produtos 
                                         
+                                        System.out.println(" ");
+                                        System.out.println("----------------------------------------------------------------------");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -521,8 +532,8 @@ public class cargo {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida! Por favor, digite apenas números.");
-                input.nextLine();
-                buscar = false; // Limpa o buffer do scanner (remove o texto inválido)
+                input.nextLine();// Limpa o buffer do scanner (remove o texto inválido)
+                buscar = false;  
             } 
         // Return menu de Farmacêutico     
         } while (buscar == false);   
@@ -624,12 +635,13 @@ public class cargo {
                         }
                     break;
 
-                        // Redefinir senha 
                     case 2: 
+                    // Redefinir senha 
                         System.out.print("Digite o login do usuário: ");
                             login = input.next(); 
                         funct.resetPassword(login);
 
+                        System.out.println("----------------------------------------------------------------------");
                         moreOrClose(); 
 
                         if (moreOrclose == 1){
@@ -640,6 +652,7 @@ public class cargo {
                     break;
 
                     case 3:
+                    // Alterar dados do usuário 
                         System.out.println(" - Alterar dados do usuário - ");
                         System.out.println("----------------------------------------------------------------------");
                         
@@ -677,9 +690,11 @@ public class cargo {
                                         buscar = false;
                                     break;
                                     case 1:
+                                    // Alterar o nome
                                         funct.alterName(login);
 
                                         // Fechar ou continuar 
+                                        System.out.println("----------------------------------------------------------------------");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -689,9 +704,11 @@ public class cargo {
                                         }
                                     break;
                                     case 2:
+                                        // Alterar login 
                                         funct.alterLogin(login);
 
                                         // Fechar ou continuar 
+                                        System.out.println("----------------------------------------------------------------------");
                                         moreOrClose(); 
 
                                         if (moreOrclose == 1){
@@ -701,6 +718,7 @@ public class cargo {
                                         }
                                     break;
                                     case 3:
+                                        // Alterar cargo 
                                         funct.alterCargo(login);
 
                                         // Fechar ou continuar 
@@ -732,12 +750,33 @@ public class cargo {
     }
     
     public void moreOrClose(){
-             
-        System.out.println("Deseja fazer mais algo ou Deseja sair ?");
-            System.out.println("1 - Voltar para o Menu");
-            System.out.println("2 - Sair");
-            System.out.println("----------------------------------------------------------------------");
-                moreOrclose = input.nextInt();     
-    } 
+        
+        buscar = true; 
+        System.out.println(" ");
+        System.out.println("----------------------------------------------------------------------");            
+            do{ System.out.println("Deseja fazer mais algo ou Deseja sair ?");
+                System.out.println("1 - Voltar para o Menu");
+                System.out.println("2 - Sair");
+                System.out.println("----------------------------------------------------------------------");
+                    moreOrclose = input.nextInt();
+
+                switch (moreOrclose) {
+
+                    default: 
+                        System.out.println("Por favor insira um numero válido ");
+                        System.out.println("----------------------------------------------------------------------");
+                        buscar = false;
+                    break;
+                    case 1:
+                        moreOrclose = 1;
+                    break;
+                    case 2: 
+                        moreOrclose = 2; 
+                    break;
+                }
+            } while (buscar == false); 
+       
+                
+    }       
 
 }
