@@ -565,12 +565,80 @@ public class funcoes {
     
     // Relatórios 
     
-    
+    // Relatórios de notas fiscais 
+    public void relatorioNotas() {
+        buscar = true;
+        StringBuilder dados = new StringBuilder();
+        
+        // Adiciona o cabeçalho CSV
+        dados.append("N°Nota , Produto , qtde , dtEmissão \n");
+
+        try {
+            Statement stmt = conn.createStatement();
+
+            String sql = "SELECT nf.num_nfe, p.nome, np.qtde_ent, nf.data_emissao " +
+                         "FROM notas_fiscais nf " +
+                         "JOIN nota_prod np ON nf.ID_NF = np.nota_id " +
+                         "JOIN produtos p ON p.ID = np.prod_id";
+
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                int num_nfe = rs.getInt("num_nfe");
+                String nomeProduto = rs.getString("nome");
+                int qtdeEnt = rs.getInt("qtde_ent");
+                java.sql.Date dataEmissao = rs.getDate("data_emissao");
+
+                String linha = num_nfe + "," + nomeProduto + "," + qtdeEnt + "," + dataEmissao;
+                dados.append(linha).append("\n");
+
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("Nota: " + num_nfe + " / Produto: " + nomeProduto + " / Quantidade: " + qtdeEnt + " / Data: " + dataEmissao);
+                System.out.println("----------------------------------------------------------------------");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar: " + e.getMessage());
+        }
+
+        do {System.out.println(" ");
+            System.out.print("Deseja salvar o relatório em CSV? (s/n): ");
+                String opt = input.nextLine().trim();
+
+            if (opt.equalsIgnoreCase("s")) {
+                System.out.print("Digite o nome do arquivo: ");
+                String name_relat = input.nextLine();
+
+                String pasta = "C:/Users/maiqu/OneDrive/Área de Trabalho/relatorios";
+                File dir = new File(pasta);
+                if (!dir.exists()) dir.mkdirs();
+
+                if (!pasta.endsWith("/") && !pasta.endsWith("\\")) pasta += "/";
+
+                String caminhoCompleto = pasta + name_relat;
+                if (!caminhoCompleto.toLowerCase().endsWith(".csv")) {
+                    caminhoCompleto += ".csv";
+                }
+
+                salvarCSV(dados.toString(), caminhoCompleto);
+                buscar = false;
+
+            } else if (opt.equalsIgnoreCase("n")) {
+                System.out.println("Ok, prosseguindo...");
+                buscar = false;
+            } else {
+                System.out.println("Por favor, escolha uma opção válida");
+            }
+        } while (buscar == true);
+}
     
     // Relatório de Posição de estoque 
     public void pos_estoque(){
         
         StringBuilder dados = new StringBuilder();
+        
+        // Adiciona o cabeçalho CSV
+        dados.append("ID , Nome , Valor , Quantidade \n");
         
         try{
     
@@ -642,82 +710,8 @@ public class funcoes {
         buscar = true; 
         StringBuilder dados = new StringBuilder();
         
-        try{
-    
-            // Criar o objeto Statement para enviar comandos SQL
-            Statement stmt = conn.createStatement();
-
-            // SQL de consulta
-            String sql = "SELECT * FROM produtos";
-
-            // Executar o SELECT
-            ResultSet rs = stmt.executeQuery(sql);
-
-            // Percorrer os resultados
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                String nome = rs.getString("nome");
-                int qtde = rs.getInt("qtde");
-                int cons = rs.getInt("consumo");
-                
-                String linha = id + "," + nome + "," + qtde + "," + cons; // armazena os dados nessa variavel 
-                
-                dados.append(linha).append("\n"); //Coloca na variavel "dados" a String da variavel linha 
-                
-                System.out.println("----------------------------------------------------------------------");
-                System.out.println(" / ID: " + id + " / Nome: " + nome + " / Quantidade: " + qtde + " / Consumo: " + cons + " / ");
-                System.out.println("----------------------------------------------------------------------");
-            }   
-            
-        } catch (Exception e) {
-            System.out.println("Erro ao consultar: " + e.getMessage());
-        }
-        
-        do{ System.out.print("Deseja salvar o relatório em CSV? (s/n): ");
-                String opt = input.next();
-                input.nextLine(); // tira a linha em branco que buga 
-                
-            if (opt.equalsIgnoreCase("s")) {
-                System.out.print("Digite o nome do arquivo: ");
-                String name_relat = input.nextLine();
-
-                // Caminho fixo
-                String pasta = "C:/Users/maiqu/OneDrive/Área de Trabalho/relatorios";
-
-                // Cria a pasta se não existir
-                File dir = new File(pasta);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                // Garante separador no final do caminho (bug que nao salva arquivo)
-                if (!pasta.endsWith("/") && !pasta.endsWith("\\")) {
-                    pasta += "/";
-                }
-
-                // Monta o caminho completo
-                String caminhoCompleto = pasta + name_relat;
-                if (!caminhoCompleto.toLowerCase().endsWith(".csv")) {
-                    caminhoCompleto += ".csv";
-                }
-
-                salvarCSV(dados.toString(), caminhoCompleto);
-            }
-            else if(opt.equalsIgnoreCase("n")) {
-                System.out.println("ok, prosseguindo...");
-            }
-            else {
-                System.out.println("Por favor, escolha uma opção válida");
-                buscar = false;
-            }
-        } while(buscar == false);    
-    }
-    
-    // Relatório de Entrada 
-    public void EntradaProd(){
-        
-        buscar = true; 
-        StringBuilder dados = new StringBuilder();
+        // Adiciona o cabeçalho CSV
+        dados.append("ID , Nome , qtde , consumo \n");
         
         try{
     
