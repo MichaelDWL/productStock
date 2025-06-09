@@ -83,10 +83,10 @@ public class funcoes {
             
     // Criar produtos 
     public void CreateProd() {
+            //input.nextLine(); // limpar 
             String nome, und, controleEspecial;
 
             System.out.println("Digite o nome do produto: ");
-                input.nextLine(); // limpar 
                 nome = input.nextLine(); 
                 
             System.out.println("----------------------------------------------------------------------");

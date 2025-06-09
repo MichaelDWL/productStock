@@ -47,7 +47,7 @@ public class conexaodb {
         // Tabela produtos
         String sqlProdutos = "CREATE TABLE IF NOT EXISTS produtos ("
                 + "ID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,"
-                + "nome VARCHAR(30) NOT NULL UNIQUE,"
+                + "nome VARCHAR(50) NOT NULL UNIQUE,"
                 + "unidade VARCHAR(10) NOT NULL,"
                 + "lote VARCHAR(10),"
                 + "Dtvalidade VARCHAR(10),"
