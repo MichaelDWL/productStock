@@ -27,12 +27,12 @@ public class SyGerenciamentoEstoqueA3 {
         
         String loginMain = null, senhaMain = null, nomeCurto, cargoMain = null;        
         int cargo, options; 
-        
-        System.out.println("----------------------------------------------------------------------");
+       
+        System.out.println("----------------------------------------------------------------------------------------------------");
         System.out.println(" ");
-        System.out.println("-------------------------------+ LOGIN +------------------------------");
+        System.out.println("----------------------------------------------+ LOGIN +---------------------------------------------");
         System.out.println(" ");
-        System.out.println("----------------------------------------------------------------------");                   
+        System.out.println("----------------------------------------------------------------------------------------------------");                   
         System.out.println(" ");
         System.out.println("Olá, Seja bem vindo !");
 
@@ -56,10 +56,10 @@ public class SyGerenciamentoEstoqueA3 {
             int restantes = MAX_TENTATIVAS - tentativas;
 
             if (restantes > 0) {
-                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println("Tentativa inválida. Restam " + restantes + " tentativas.");
             } else {
-                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println("Número máximo de tentativas excedido. Encerrando.");
                 break;
             }
@@ -83,11 +83,11 @@ public class SyGerenciamentoEstoqueA3 {
                 Logger.getLogger(SyGerenciamentoEstoqueA3.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
-                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println(" ");
                 System.out.println(nomeCurto + " -+- " + cargoMain);
                 System.out.println(" ");
-                System.out.println("----------------------------------------------------------------------");
+                System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println(" ");
                 System.out.println("Olá " + nomeCurto+",");
                 System.out.println(" ");
